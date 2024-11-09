@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework', # Django Rest Framework to work with API
+    'Application', # Building the application there
 ]
 
 MIDDLEWARE = [
