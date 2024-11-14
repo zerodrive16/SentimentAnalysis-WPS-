@@ -5,14 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="90731ee4-3cb5-436f-9246-3d24b0f8e0a1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/discord.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ml/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ml/models.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ml/predict.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ml/preprocess.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ml/train.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/Application/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/manage.py" beforeDir="false" afterPath="$PROJECT_DIR$/manage.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,7 +48,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "discord-project",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -76,7 +70,8 @@
       <workItem from="1731100277656" duration="39000" />
       <workItem from="1731137043328" duration="2152000" />
       <workItem from="1731142799948" duration="3314000" />
-      <workItem from="1731147091013" duration="6017000" />
+      <workItem from="1731147091013" duration="7266000" />
+      <workItem from="1731176571836" duration="1891000" />
     </task>
     <servers />
   </component>
