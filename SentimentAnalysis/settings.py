@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework', # Django Rest Framework to work with API
-    'Application', # Building the application there
+    'Application', # Building the web application
+    'ml', # Backend machine learning code to load and process text
 ]
 
 MIDDLEWARE = [

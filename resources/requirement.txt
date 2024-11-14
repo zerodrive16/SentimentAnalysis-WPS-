@@ -1,0 +1,23 @@
+Requirement, Dependencies, Libraries, Installations, etc..
+
+Pycharm Code commands
+- python manage.py runserver
+- python manage.py  startapp <app_name>
+- python manage.py makemigrations
+- python manage.py migrate
+
+Dataset (Automated)
+- Reddit Account (Dev)
+- Google Cloud Account
+- Make.com
+-> (Reddit Account -> Client ID, Client Secret)
+-> (Google Cloud Account -> Client ID, Client Secret)
+
+pip install <library>
+djangorestframework API calls
+Numpy               Numerical operations
+Pandas              Data manipulation
+tweepy              Twitter API access
+nltk                Natural language processing
+tensorflow          Machine learning and deep learning
+scikit-learn        Machine learning tools

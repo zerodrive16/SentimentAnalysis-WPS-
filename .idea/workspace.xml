@@ -5,7 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="90731ee4-3cb5-436f-9246-3d24b0f8e0a1" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/ml/Dataset.csv" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/ml/text_tokenization.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ml/vectorization.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/requirement.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SentimentAnalysis/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/SentimentAnalysis/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ml/collectDatasets.py" beforeDir="false" afterPath="$PROJECT_DIR$/ml/filter_regex.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ml/predict.py" beforeDir="false" afterPath="$PROJECT_DIR$/ml/lemmatization.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ml/preprocess.py" beforeDir="false" afterPath="$PROJECT_DIR$/ml/remove_stopwords.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ml/train.py" beforeDir="false" afterPath="$PROJECT_DIR$/ml/sentiment_labeling.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -83,5 +91,16 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>
