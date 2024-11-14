@@ -5,15 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="90731ee4-3cb5-436f-9246-3d24b0f8e0a1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/ml/text_tokenization.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ml/vectorization.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/requirement.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SentimentAnalysis/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/SentimentAnalysis/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ml/collectDatasets.py" beforeDir="false" afterPath="$PROJECT_DIR$/ml/filter_regex.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ml/predict.py" beforeDir="false" afterPath="$PROJECT_DIR$/ml/lemmatization.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ml/preprocess.py" beforeDir="false" afterPath="$PROJECT_DIR$/ml/remove_stopwords.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ml/train.py" beforeDir="false" afterPath="$PROJECT_DIR$/ml/sentiment_labeling.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Application/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/Application/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Application/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/Application/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/requirement.txt" beforeDir="false" afterPath="$PROJECT_DIR$/resources/requirement.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,20 +50,20 @@
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;discord-project&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Stefa\PycharmProjects\SentimentAnalysis\resources" />
       <recent name="$PROJECT_DIR$/ml" />
     </key>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-PY-241.17011.127" />
-        <option value="bundled-python-sdk-48aec45f0201-7e9c3bbb6e34-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-241.17011.127" />
+        <option value="bundled-python-sdk-67fca87a943a-c986f194a52a-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-233.11799.259" />
       </set>
     </attachedChunks>
   </component>
@@ -86,6 +81,7 @@
       <workItem from="1731147091013" duration="6017000" />
       <workItem from="1731321440100" duration="2845000" />
       <workItem from="1731499970628" duration="884000" />
+      <workItem from="1731611267886" duration="1069000" />
     </task>
     <servers />
   </component>
