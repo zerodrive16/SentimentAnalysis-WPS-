@@ -28,7 +28,7 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
-# Application definition
+# WebApplication definition
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -38,8 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework', # Django Rest Framework to work with API
-    'Application', # Building the web application
-    'ml', # Backend machine learning code to load and process text
+    'WebApplication', # Building the web application
+    'Backend_ML', # Backend machine learning code to load and process text
 ]
 
 MIDDLEWARE = [
