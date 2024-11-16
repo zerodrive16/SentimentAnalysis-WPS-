@@ -5,7 +5,7 @@ __pycache__/
 *.pyd
 
 # File
-/resources/AdminUserData
+/resources/AdminUserData.txt
 
 # Virtual Environment
 venv/
