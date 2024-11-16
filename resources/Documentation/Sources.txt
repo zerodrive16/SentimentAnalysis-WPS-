@@ -13,8 +13,11 @@ YouTube Videos:
 # Read a CSV File
 - https://youtu.be/q5uM4VKywbA?si=M1tdhRtAdd4Arjfz
 
+# API Call to Reddit
+- https://youtu.be/x9boO9x3TDA?si=nsOOu4xOv368WMO7
+
 Website:
-
-
-Docs:
-
+# Reddit API Documentation
+- https://www.reddit.com/dev/api#GET_subreddits_{where}
+# Instruction to API Header, Queries and Authorization
+- https://github.com/reddit-archive/reddit/wiki/OAuth2-Quick-Start-Example
