@@ -4,9 +4,12 @@ from django.db import models
 
 
 class Data(models.Model):
-    feature_1 = models.FloatField()
-    feature_2 = models.FloatField()
-    target = models.FloatField()
+    id = models.CharField(max_length=50, primary_key=True)
+    link_author = models.CharField(max_length=200)
+    author = models.CharField(max_length=200)
+    title = models.CharField(max_length=1000)
+    time_posted = models.IntegerField()
+    body_information = models.TextField()
 
     def __str__(self):
-        return f'{self.feature_1}, {self.feature_2}, {self.target}'
+        return self.title
