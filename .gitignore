@@ -1,0 +1,54 @@
+# Python Bytecode Files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# File Ignore
+/resources/AdminUserData.txt
+
+# Virtual Environment
+venv/
+env/
+ENV/
+.venv/
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+
+# PyCharm project files
+.idea/
+
+# VS Code project files
+.vscode/
+
+# Log files
+*.log
+
+# Test Coverage Reports
+.coverage
+*.coveragerc
+
+# Temporary files
+*.bak
+*.swp
+
+# Environment-specific files
+.env
+*.env
+
+# macOS specific files
+.DS_Store
+
+# Windows specific files
+Thumbs.db
+
+# PyInstaller files
+*.spec
+
+# Node.js related (if using Node for frontend or asset management)
+node_modules/
+
+# Other editor files
+*.sublime-workspace
+*.sublime-project
