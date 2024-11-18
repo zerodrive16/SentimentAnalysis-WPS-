@@ -22,23 +22,25 @@ csv_path = os.path.join(base_path, 'Dataset', 'Dataset.csv')
 # reason = special characters from other countries
 with open(csv_path, 'r', errors='ignore') as csvfile:
     csv_reader = csv.reader(csvfile, delimiter=',')
-
     next(csv_reader)
 
     for line in csv_reader:
-        post_id = line[0]
-        post_author = line[1]
-        post_title = line[2]
-        post_created = int(line[3])
-        post_upvotes = int(line[4])
-        comment_id = line[5]
-        comment_author = line[6]
-        comment_body = line[7]
-        comment_created = int(line[8])
-        comment_upvotes = int(line[9])
-        subreddit = line[10]
+        id = line[0]
+        post_id = line[1]
+        post_author = line[2]
+        post_title = line[3]
+        post_created = int(line[4])
+        post_upvotes = int(line[5])
+        comment_id = line[6]
+        comment_author = line[7]
+        comment_body = line[8]
+        comment_created = int(line[9])
+        comment_upvotes = int(line[10])
+        subreddit = line[11]
 
         data = Data(
+            id=id,
+            post_id=post_id,
             post_author=post_author,
             post_title=post_title,
             post_created=post_created,
