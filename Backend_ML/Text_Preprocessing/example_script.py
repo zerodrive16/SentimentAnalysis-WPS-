@@ -26,21 +26,30 @@ with open(csv_path, 'r', errors='ignore') as csvfile:
     next(csv_reader)
 
     for line in csv_reader:
-        data_id = line[0]
-        link_author = line[1]
-        author = line[2]
-        title = line[3]
-        time_posted = int(line[4])
-        body_information = line[5]
+        post_id = line[0]
+        post_author = line[1]
+        post_title = line[2]
+        post_created = int(line[3])
+        post_upvotes = int(line[4])
+        comment_id = line[5]
+        comment_author = line[6]
+        comment_body = line[7]
+        comment_created = int(line[8])
+        comment_upvotes = int(line[9])
+        subreddit = line[10]
 
         data = Data(
-            id=data_id,
-            link_author=link_author,
-            author=author,
-            title=title,
-            time_posted=time_posted,
-            body_information=body_information
+            post_author=post_author,
+            post_title=post_title,
+            post_created=post_created,
+            post_upvotes=post_upvotes,
+            comment_id=comment_id,
+            comment_author=comment_author,
+            comment_body=comment_body,
+            comment_created=comment_created,
+            comment_upvotes=comment_upvotes,
+            subreddit=subreddit
         )
 
         data.save()
-
+        
