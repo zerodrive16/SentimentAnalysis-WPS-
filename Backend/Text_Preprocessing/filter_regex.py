@@ -1,4 +1,10 @@
 import re
+from Backend.models import Data
+
+all_records = Data.objects.all()
+
+for record in all_records:
+    print(record)
 
 
 def clean_text(input_text):
