@@ -11,7 +11,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'SentimentAnalysis.settings')
 # Set up ORM to read / write in database
 django.setup()
 
-from Backend.models import Data
+from WebApplication.models import Data
 
 
 class ImportCSVData:

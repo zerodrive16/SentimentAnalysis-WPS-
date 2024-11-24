@@ -13,7 +13,7 @@ def home(request):
 
 # Calling the Machine Learning Script
 def runMLScript(request):
-    script_path = os.path.join('Backend', 'Text_Preprocessing', 'import_csv.py')
+    script_path = os.path.join('WebApplication', 'Text_Preprocessing', 'import_csv.py')
 
     try:
         result = subprocess.run(['python', script_path], capture_output=True, text=True)
