@@ -28,3 +28,21 @@ def runMLScript(request):
         'error': error
     }
     return render(request, "index.html", context)
+
+
+def regex(request):
+    script_path = os.path.join('Backend_ML', 'Text_Preprocessing', 'filter_regex.py')
+
+    try:
+        result = subprocess.run(['python', script_path], capture_output=True, text=True)
+        output = result.stdout
+        error = result.stderr
+    except Exception as e:
+        output = f"Error occurred: {str(e)}"
+        error = None
+
+    context = {
+        'output': output,
+        'error': error
+    }
+    return render(request, "index.html", context)

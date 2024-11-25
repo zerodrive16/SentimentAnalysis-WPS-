@@ -5,6 +5,7 @@ urlpatterns = [
     # Web Application
     path('', views.home, name='home'),
     # Execute Machine Learning
-    path('backend', views.runMLScript, name='runMLScript')
+    path('regex', views.regex, name='regex'),
+    #path('', views.runMLScript, name='runMLScript')
 ]
 
