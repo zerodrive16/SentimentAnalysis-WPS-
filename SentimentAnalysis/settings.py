@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework', # Django Rest Framework to work with API
     'WebApplication', # Building the web application
-    'Backend_ML', # Backend machine learning code to load and process text
 ]
 
 MIDDLEWARE = [
