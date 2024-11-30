@@ -14,40 +14,82 @@ django.setup()
 from WebApplication.models import Data
 
 
+
 class ImportCSVData:
-    def __init__(self, csv_path):
-        self.csv_path = csv_path
+    # Initialize both Dataset
+    def __init__(self, csv_path_post_dataset, csv_path_comment_dataset):
+        self.csv_path_post_dataset = csv_path_post_dataset
+        self.csv_path_comment_dataset = csv_path_comment_dataset
 
     def readData(self):
-        with open(self.csv_path, 'r', errors='ignore') as csvfile:
-            csv_reader = csv.reader(csvfile, delimiter=',')
-            next(csv_reader)
+        # Open the Post Dataset first
+        with open(self.csv_path_post_dataset, 'r', errors='ignore') as csv_post_file:
+            csv_post_reader = csv.reader(csv_post_file, delimiter=',')
+            # Skip the Header
+            next(csv_post_reader)
 
-            for line in csv_reader:
-                data = self.parseData(line)
+            # Iterate over the post_dataset
+            for post_line in csv_post_reader:
+                post_id = post_line[0] # Take the Post ID
 
-                data.save()
+                # Finding matched ids from post and comment
+                match_post_comment = self.findMatchId(post_id)
 
-    def parseData(self, line):
+                for comment_line in match_post_comment:
+                    data = self.parseData(post_line, comment_line)
+                    data.save()
+
+    def findMatchId(self, post_id):
+        # Find all the Comments that match with the Post Id
+        match_comments = [] #
+
+        with open(self.csv_path_comment_dataset, 'r', errors='ignore') as csv_comment_file:
+            csv_comment_reader = csv.reader(csv_comment_file, delimiter=',')
+            # Skip the Header
+            next(csv_comment_reader)
+
+            # Iterate over the Comments and check till the id sequence is higher than post_id
+            for comment_line in csv_comment_reader:
+                check_current_comment = comment_line[0]
+                if check_current_comment == post_id:
+                    match_comments.append(comment_line)
+                elif check_current_comment > post_id:
+                    break
+
+        return match_comments
+
+    def parseData(self, post_line, comment_line):
         return Data(
-            id=line[0],
-            post_id=line[1],
-            post_author=line[2],
-            post_title=line[3],
-            post_created=int(line[4]),
-            post_upvotes=int(line[5]),
-            comment_id=line[6],
-            comment_author=line[7],
-            comment_body=line[8],
-            comment_created=int(line[9]),
-            comment_upvotes=int(line[10]),
-            subreddit=line[11]
+            id=post_line[0],
+            post_id=post_line[1],
+            post_author=post_line[2],
+            post_title=post_line[3],
+            post_created=int(post_line[4]),
+            post_upvotes=int(post_line[5]),
+            c_id=int(comment_line[0]),
+            comment_id=comment_line[1],
+            comment_author=comment_line[2],
+            comment_body=comment_line[3],
+            comment_body_corrected=comment_line[4],
+            comment_created=int(comment_line[5]),
+            comment_upvotes=int(comment_line[6]),
+            subreddit=comment_line[7],
+            comment_labels=comment_line[8],
+            comment_regex=comment_line[9]
         )
 
 
-# Get Absolute Path till 2nd parent folder
-base_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-csv_path = os.path.join(base_path, 'Dataset', 'Dataset.csv')
 
-sendCSV = ImportCSVData(csv_path)
-sendCSV.readData()
+if __name__ == '__main__':
+    print("Starting script: \n")
+
+    # Get Absolute Path till 2nd parent folder to retrieve the files
+    base_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    csv_path_post_dataset = os.path.join(base_path, 'Dataset', 'Post_Dataset.csv')
+    csv_path_comment_dataset = os.path.join(base_path, 'Dataset', 'Comment_Dataset.csv')
+    print(csv_path_comment_dataset)
+
+    sendCSV = ImportCSVData(csv_path_post_dataset, csv_path_comment_dataset)
+    sendCSV.readData()
+
+    print("End of script")
