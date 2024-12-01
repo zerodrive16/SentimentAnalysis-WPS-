@@ -22,28 +22,25 @@ class FilterRegex:
     def iterateData(self):
         comment_body_array = []
         for record in all_records:
-            comment_body_array.append(record.comment_body)
-
-        return self.performRegex(comment_body_array)
-
-    def performRegex(self, comment_body_array):
-        regex_free_array = []
-
-        for comment in comment_body_array:
-            # Remove emojis and non-printable characters
-            cleaned_comment = re.sub(r'[^\x00-\x7F]+', '', comment)
-            # Remove special characters, keeping only letters and numbers
-            cleaned_comment = re.sub(r'[^a-zA-Z0-9\s]', '', cleaned_comment)
-            # Remove extra spaces
-            cleaned_comment = re.sub(r'\s+', ' ', cleaned_comment).strip()
-
-            regex_free_array.append(cleaned_comment)
-
-        return regex_free_array
+            comment_regex = self.performRegex(record.comment_body)
+            record.comment_body_corrected = comment_regex
+            record.save()
 
 
-all_records = Data.objects.all()
-filterRegex = FilterRegex(all_records)
-filterRegex.iterateData()
+    def performRegex(self, comment_body):
+
+        # Remove emojis and non-printable characters
+        cleaned_comment = re.sub(r'[^\x00-\x7F]+', '', comment_body)
+        # Remove special characters, keeping only letters and numbers (', !, ., ?, +, -, and ,)
+        cleaned_comment = re.sub(r'[^a-zA-Z0-9\s\'!,\.\?\+\-]', '', cleaned_comment)
+        # Remove extra spaces
+        cleaned_comment = re.sub(r'\s+', ' ', cleaned_comment).strip()
+
+        return cleaned_comment
+
+if __name__ == '__main__':
+    all_records = Data.objects.all()
+    filterRegex = FilterRegex(all_records)
+    filterRegex.iterateData()
 
 
