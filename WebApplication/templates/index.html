@@ -9,12 +9,11 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <!-- External CSS -->
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="static/style.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="style.css">
 </head>
-<body>
 
+<body class="light-mode">
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg bg-body-secondary">
     <div class="container-fluid">
@@ -44,6 +43,9 @@
                 <li class="nav-item">
                     <a class="nav-link disabled" aria-disabled="true">Disabled</a>
                 </li>
+                <li class="nav-item dropdown">
+                    <button id="theme-toggle" class="btn btn-secondary">Switch to Dark Mode</button>
+                </li>
             </ul>
             <form class="d-flex" role="search">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
@@ -57,76 +59,92 @@
 <main class="container-fluid my-5">
     <div class="row">
 
-        <!-- Side Bar -->
+        <!-- Left Side -->
         <div class="col-md-2 sticky-left">
-            <h2>SideBar</h2>
-            <div class="btn-group-vertical" role="group" aria-label="Vertical radio toggle button group">
-                <input type="radio" class="btn-check" name="option1" id="option1" autocomplete="off" checked>
-                <label class="btn btn-outline-primary" for="option1">Option 1</label>
-
+            <div class="container mb-3">
+                <!-- Banner Ad -->
+                <a href="https://example.com" target="_blank">
+                    <img src="https://i0.wp.com/beneaththetangles.com/wp-content/uploads/2022/04/saber-arturia-pendragon-standing-firm.png?resize=600%2C2500&ssl=1" class="card-img-top img-fluid" alt="Advertisement">
+                </a>
             </div>
         </div>
-
 
         <!-- Middle Column: Social Media Post Feed -->
         <div class="col-md-6">
-            <!-- Top Container: Input Area -->
-            <div class="mb-4">
 
-                <div class="form-floating mb-1">
-                    <input type="text" class="form-control" id="floatingName" placeholder="Name" aria-label="Username" aria-describedby="button-addon2">
-                    <label for="floatingName">Name</label>
-                </div>
-
-                <div class="form-floating mb-1">
-                    <textarea class="form-control" id="floatingComment" placeholder="Comment" aria-label="Textarea"></textarea>
-                    <label for="floatingComment">Post your reply</label>
-                </div>
-
-                <div class="col-auto">
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </div>
-
-            </div>
-
-            <!-- Bottom Container: Post Feed -->
+            <!-- Post Feed -->
             <div class="post-feed">
                 <!-- Example Post 1 -->
                 <div class="card mb-3">
-                    <div class="card-body">
-                        <h6 class="card-title">User Name</h6>
-                        <p class="card-text">This is an example of a post.</p>
+                    <div class="card-body p-2 d-flex justify-content-between align-items-center">
+                        <!-- Name -->
+                        <h6 class="card-title">KeshaEUW</h6>
+                        <!-- Comment ID -->
+                        <span class="text-muted">Post ID: 1</span>
+                    </div>
+                    <div class="card-body p-2">
+                        <p class="card-text">WE WIN THOOOOOOOOOOSE!!!!</p>
+                    </div>
+
+                    <div class="card-footer">
+                        <!-- Comment Section -->
+                        <h6 class="text-muted">Comments</h6>
+
+                        <!-- Single Comment -->
+                        <div class="card mb-2">
+                            <div class="card-body p-2 d-flex justify-content-between align-items-center">
+                                <!-- Name -->
+                                <strong>T1 Gumayusi:</strong>
+                                <!-- Comment ID -->
+                                <span class="text-muted">Comment #1</span>
+                            </div>
+                            <div class="card-body p-2">
+                                <!-- Comment Body -->
+                                <p class="mb-0">Great post!</p>
+                            </div>
+                        </div>
+
+
+                        <!-- Another Comment -->
+                        <div class="card mb-2">
+                            <div class="card-body p-2 d-flex justify-content-between align-items-center">
+                                <!-- Name -->
+                                <strong>T1 Faker:</strong>
+                                <!-- Comment ID -->
+                                <span class="text-muted">Comment #2</span>
+                            </div>
+                            <div class="card-body p-2">
+                                <!-- Comment Body -->
+                                <p class="mb-0">I totally agree with your post!</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
-
-                <!-- Example Post 2 -->
-                <div class="card mb-3">
-                    <div class="card-body">
-                        <h6 class="card-title">Another User</h6>
-                        <p class="card-text">This is an example of a post.</p>
-                    </div>
-                </div>
-
-                <!-- Add more posts here -->
-                <div class="card mb-3">
-                    <div class="card-body">
-                        <h6 class="card-title">Another Another User</h6>
-                        <p class="card-text">This is an example of a post.</p>
-                    </div>
-                </div>
-
             </div>
         </div>
 
-        <!-- Column 3 -->
+        <!-- Right Side -->
         <div class="col-md-3 mb-3">
+            <!-- Input comment -->
             <div class="card mb-5">
-                <div class="card-body">
-                    <h5 class="card-title">Statistic 1</h5>
-                    <p class="card-text">This is the third column. You can customize it with more Bootstrap components.</p>
-                </div>
+                    <div class="input-group mb-1">
+                        <!-- Input Name -->
+                        <input type="text" class="form-control" id="floatingName" placeholder="Name" aria-label="Username" aria-describedby="button-addon2">
+                        <!-- Input Comment ID -->
+                        <input type="text" class="form-control" placeholder="Comment ID" aria-label="id">
+                    </div>
+                    <!-- Input Text -->
+                    <div class="form-floating mb-1">
+                        <textarea class="form-control" id="floatingComment" placeholder="Comment" aria-label="Textarea"></textarea>
+                        <label for="floatingComment">Post your reply</label>
+                    </div>
+                    <!-- Submit Button -->
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
             </div>
 
+            <!-- Space for additional info -->
             <div class="card mb-5">
                 <div class="card-body">
                     <h5 class="card-title">Statistic 2</h5>
@@ -147,6 +165,8 @@
     </div>
 </main>
 
+<!-- Java Script -->
+<script src="static/script.js"></script>
 </body>
 
 <!-- Footer -->
