@@ -7,7 +7,7 @@ try:
         json={
             "key": "433NFT4SZ90NHDXO24EC0E1V9BI0ND11",
             "text": "What is thiss port.",
-            "session_id": "test session",
+            "session_id": "test.py session",
             "auto_apply": True
         }
     )
