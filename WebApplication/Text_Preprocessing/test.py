@@ -1,32 +1,34 @@
-import os
 import torch
+import torch.optim as optim
+from tqdm import tqdm
 from torch.utils.data import DataLoader
-from transformers import BertTokenizer, BertForSequenceClassification, AdamW
+from transformers import BertTokenizer, BertForSequenceClassification
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
+import os
+import sys
+import django
+sys.path.append(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), '..'))
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'SentimentAnalysis.settings')
+django.setup()
+from WebApplication.models import Data
 
-# Step 1: Define dummy data
-texts = [
-    "I love this product. It's amazing!",
-    "This is the worst experience I've ever had.",
-    "Absolutely fantastic! Highly recommend it.",
-    "Terrible quality. I want my money back.",
-    "Good value for money.",
-    "I am extremely disappointed.",
-    "This exceeded my expectations. Great job!",
-    "Not worth the hype at all.",
-]  # Example text data
-labels = [1, 0, 1, 0, 1, 0, 1, 0]  # 1 for positive, 0 for negative
+# Set up the Data
+dataset = Data.objects.values('comment_body_corrected', 'comment_labels')
 
-# Step 2: Split into train and validation sets
+texts = [entry['comment_body_corrected'] for entry in dataset]
+labels = [entry['comment_labels'] for entry in dataset]
+
+# Splitting the data in training and testing
 train_texts, val_texts, train_labels, val_labels = train_test_split(texts, labels, test_size=0.2, random_state=42)
 
-# Step 3: Tokenize the data
+# Tokenize
 tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
 train_encodings = tokenizer(train_texts, truncation=True, padding=True, max_length=128)
 val_encodings = tokenizer(val_texts, truncation=True, padding=True, max_length=128)
 
-# Step 4: Create a PyTorch Dataset class
+
+# Dataset class
 class SentimentDataset(torch.utils.data.Dataset):
     def __init__(self, encodings, labels):
         self.encodings = encodings
@@ -40,36 +42,36 @@ class SentimentDataset(torch.utils.data.Dataset):
         item['labels'] = torch.tensor(self.labels[idx])
         return item
 
+
 train_dataset = SentimentDataset(train_encodings, train_labels)
 val_dataset = SentimentDataset(val_encodings, val_labels)
 
-# Step 5: Load pre-trained BERT model
+# Load model
 model = BertForSequenceClassification.from_pretrained("bert-base-uncased", num_labels=2)
 
-# Step 6: Set up optimizer and training parameters
+# Training device
 device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
 model.to(device)
 
 train_loader = DataLoader(train_dataset, batch_size=4, shuffle=True)
 val_loader = DataLoader(val_dataset, batch_size=4)
+optimizer = optim.AdamW(model.parameters(), lr=5e-5)
 
-optimizer = AdamW(model.parameters(), lr=5e-5)
-
-# Step 7: Training loop
-epochs = 3
+# Training Loop
+epochs = 10 # Set the epoch
 
 for epoch in range(epochs):
-    model.train()
-    total_loss = 0
-    for batch in train_loader:
-        batch = {key: val.to(device) for key, val in batch.items()}
-        optimizer.zero_grad()
-        outputs = model(**batch)
-        loss = outputs.loss
-        total_loss += loss.item()
-        loss.backward()
-        optimizer.step()
-    print(f"Epoch {epoch + 1}: Loss {total_loss / len(train_loader):.4f}")
+    model.train() # Train the model
+    total_loss = 0 # Keep track of the cumulative loss during epoch
+    for batch in tqdm(train_loader, desc=f"Epoch {epoch + 1}/{epochs}", leave=False):
+        batch = {key: val.to(device) for key, val in batch.items()} # move batch to specified device and contains the inputs_id and attention_mask
+        optimizer.zero_grad() # Clearing previous gradients
+        outputs = model(**batch) # Put the input_ids and attention_mask to the model
+        loss = outputs.loss # Extracts output loss from the model
+        total_loss += loss.item() # Accumulate the loss
+        loss.backward() # Adjust the gradients (weights and magnitude) for next epoch
+        optimizer.step() # Updating model para
+    print(f"Epoch {epoch + 1}: Loss {total_loss / len(train_loader):.4f}") # Output avg. loss each epoch
 
     # Validation loop
     model.eval()
@@ -84,7 +86,7 @@ for epoch in range(epochs):
     acc = accuracy_score(val_labels, val_preds)
     print(f"Validation Accuracy: {acc:.4f}")
 
-# Step 8: Save the model
+# Save the mdoel
 model.save_pretrained("sentiment_model")
 tokenizer.save_pretrained("sentiment_model")
 print("Model and tokenizer saved to 'sentiment_model'.")

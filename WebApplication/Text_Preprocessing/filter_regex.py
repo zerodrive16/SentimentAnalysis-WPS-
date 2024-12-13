@@ -5,6 +5,7 @@ import django
 
 # Configure the Settings to set up the correct models.py path for ORM
 sys.path.append(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), '..'))
+
 # Pointing to Django Settings
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'SentimentAnalysis.settings')
 
@@ -20,7 +21,6 @@ class FilterRegex:
 
 
     def iterateData(self):
-        comment_body_array = []
         for record in all_records:
             comment_regex = self.performRegex(record.comment_body)
             record.comment_body_corrected = comment_regex

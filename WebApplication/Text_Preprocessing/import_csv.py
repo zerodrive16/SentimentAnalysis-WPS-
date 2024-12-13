@@ -13,8 +13,6 @@ django.setup()
 
 from WebApplication.models import Data
 from django.db import transaction
-from django.db.utils import IntegrityError
-
 
 
 class ImportCSVData:
