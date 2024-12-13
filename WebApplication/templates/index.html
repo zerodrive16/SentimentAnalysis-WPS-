@@ -25,26 +25,6 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Link</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Dropdown
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Action</a></li>
-                        <li><a class="dropdown-item" href="#">Another action</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="#">Something else here</a></li>
-                    </ul>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-                </li>
-                <li class="nav-item dropdown">
                     <button id="theme-toggle" class="btn btn-secondary">Switch to Dark Mode</button>
                 </li>
             </ul>
@@ -63,10 +43,12 @@
         <!-- Left Side -->
         <div class="col-md-2 sticky-left">
             <div class="container mb-3">
-                <!-- Banner Ad -->
-                <a href="https://example.com" target="_blank">
-                    <img src="https://i0.wp.com/beneaththetangles.com/wp-content/uploads/2022/04/saber-arturia-pendragon-standing-firm.png?resize=600%2C2500&ssl=1" class="card-img-top img-fluid" alt="Advertisement">
-                </a>
+                <span class="border border-primary">
+                    <!-- Banner Ad -->
+                    <a href="https://example.com" target="_blank">
+                        <img src="https://i0.wp.com/beneaththetangles.com/wp-content/uploads/2022/04/saber-arturia-pendragon-standing-firm.png?resize=600%2C2500&ssl=1" class="card-img-top img-fluid" alt="Advertisement">
+                    </a>
+                </span>
             </div>
         </div>
 
@@ -77,13 +59,13 @@
             <div class="post-feed">
                 <!-- Example Post 1 -->
                 <div class="card mb-3">
-                    <div class="card-body p-2 d-flex justify-content-between align-items-center">
+                    <div class="card-body ms-2 p-2 d-flex justify-content-between align-items-center">
                         <!-- Name -->
                         <h6 class="card-title">KeshaEUW</h6>
                         <!-- Comment ID -->
                         <span class="text-muted">Post ID: 1</span>
                     </div>
-                    <div class="card-body p-2">
+                    <div class="card-body ms-2 p-2">
                         <p class="card-text">WE WIN THOOOOOOOOOOSE!!!!</p>
                     </div>
 
@@ -152,16 +134,6 @@
                     <p class="card-text">This is the third column. You can customize it with more Bootstrap components.</p>
                 </div>
             </div>
-
-            <h1>Backend Script</h1>
-            <h2>Output from Python Script</h2>
-            <pre>{{ output }}</pre>
-            {% if error %}
-            <h2>Errors: </h2>
-            <pre> {{ error }}</pre>
-            {% endif %}
-
-            <a href="/">Back at home</a>
         </div>
     </div>
 </main>
