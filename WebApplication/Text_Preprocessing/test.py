@@ -1,63 +1,67 @@
 import torch
-from transformers import BertTokenizer, BertForSequenceClassification
+from transformers import AutoTokenizer, AutoModelForSequenceClassification
 import os
+import sys
+import django
+from tqdm import tqdm
+sys.path.append(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), '..'))
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'SentimentAnalysis.settings')
+django.setup()
+from WebApplication.models import Data
 
-# Load the fine-tuned model and tokenizer
-model_dir = "sentiment_model"
-if not os.path.exists(model_dir):
-    raise FileNotFoundError(f"Model directory '{model_dir}' not found. Please ensure the model is saved in this location.")
+# Model and Tokenizer
+preTrainedModel = "distilbert-base-uncased-finetuned-sst-2-english"
+tokenizer = AutoTokenizer.from_pretrained(preTrainedModel)
+model = AutoModelForSequenceClassification.from_pretrained(preTrainedModel)
 
-model = BertForSequenceClassification.from_pretrained(model_dir)
-tokenizer = BertTokenizer.from_pretrained(model_dir)
-
-# Set the device
-device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
+# Settings up the device
+device = torch.device("cuda" if torch.cuda.is_available() else torch.device("cpu"))
 model.to(device)
 model.eval()
 
-def predict_sentiment(text):
-    """Predicts the sentiment of the given text using the fine-tuned BERT model."""
-    # Tokenize and prepare input
-    encoding = tokenizer(text, truncation=True, padding=True, max_length=128, return_tensors="pt")
-    encoding = {key: val.to(device) for key, val in encoding.items()}
+
+def retrieveDataset():
+    # Retrieve the Dataset (finished Regex comment)
+    dataset = Data.objects.values('comment_body_adjusted')
+    comments = [entry['comment_body_adjusted'] for entry in dataset]
+    return comments
+
+
+def predictSentiment(commentsAdjusted):
+    # Tokenize and predict the sentiment analysis
+    inputs = tokenizer(commentsAdjusted, padding=True, truncation=True, return_tensors="pt", max_length=512).to(device)
 
     with torch.no_grad():
-        outputs = model(**encoding)
+        outputs = model(**inputs)
         logits = outputs.logits
-        predicted_class = torch.argmax(logits, dim=1).item()
 
-    return "Positive" if predicted_class == 1 else "Negative"
+    # Converting to probabilities
+    probabilities = torch.nn.functional.softmax(logits, dim=-1)
+    # predict the highest probability e.g. [0.25, 0.75] = 1
+    predictions = torch.argmax(probabilities, dim=-1)
+    return predictions.cpu().numpy()
 
-def calculate_percentages(comments):
-    """Calculates the percentage of positive and negative comments."""
-    positive_count = 0
-    negative_count = 0
 
-    for comment in comments:
-        sentiment = predict_sentiment(comment)
-        if sentiment == "Positive":
-            positive_count += 1
-        else:
-            negative_count += 1
+def updateDataset(commentsAdjusted, sentimentPrediction):
+    # Tqdm to see the terminal output
+    # Update the change to models.py to corresponding comment
+    for comment, prediction in tqdm(zip(commentsAdjusted, sentimentPrediction), total=len(commentsAdjusted), desc="Updating database"):
+        Data.objects.filter(comment_body_adjusted=comment).update(comment_bert_labels=prediction)
 
-    total = positive_count + negative_count
-    positive_percentage = (positive_count / total) * 100 if total > 0 else 0
-    negative_percentage = (negative_count / total) * 100 if total > 0 else 0
 
-    return positive_percentage, negative_percentage
+def main():
+    # Call the dataset
+    commentsAdjusted = retrieveDataset()
 
-# Example usage
+    # Call the Sentiment prediction
+    print("Predicting sentiment...")
+    sentimentPrediction = predictSentiment(commentsAdjusted)
+
+    # Update the dataset
+    print("Update database...")
+    updateDataset(commentsAdjusted, sentimentPrediction)
+
 if __name__ == "__main__":
-    comments = []
-    while True:
-        text = input("Enter a comment to analyze sentiment (or 'done' to finish input and calculate percentages): ")
-        if text.lower() == 'done':
-            break
-        comments.append(text)
+    main()
 
-    if comments:
-        positive_percentage, negative_percentage = calculate_percentages(comments)
-        print(f"Positive Sentiment: {positive_percentage:.2f}%")
-        print(f"Negative Sentiment: {negative_percentage:.2f}%")
-    else:
-        print("No comments were provided.")
+

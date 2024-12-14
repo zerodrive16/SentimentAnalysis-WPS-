@@ -10,17 +10,17 @@ class Data(models.Model):
     post_author = models.CharField(max_length=200)
     post_title = models.CharField(max_length=200)
     post_created = models.IntegerField()
-    post_upvotes = models.IntegerField()
+    post_up_votes = models.IntegerField()
     c_id = models.IntegerField()
     comment_id = models.CharField(max_length=50)
     comment_author = models.CharField(max_length=100)
     comment_body = models.TextField()
-    comment_body_corrected = models.TextField()
+    comment_body_adjusted = models.TextField()
     comment_created = models.IntegerField()
-    comment_upvotes = models.IntegerField()
+    comment_up_votes = models.IntegerField(default=1)
     subreddit = models.CharField(max_length=15)
-    comment_labels = models.IntegerField()
-    comment_regex = models.TextField()
+    comment_personal_labels = models.IntegerField()
+    comment_bert_labels = models.IntegerField()
 
     def __str__(self):
         return self.post_title

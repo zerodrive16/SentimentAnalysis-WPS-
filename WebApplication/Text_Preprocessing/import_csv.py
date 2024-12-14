@@ -67,17 +67,17 @@ class ImportCSVData:
             post_author=post_line[2],
             post_title=post_line[3],
             post_created=int(post_line[4]),
-            post_upvotes=int(post_line[5]),
+            post_up_votes=int(post_line[5]),
             c_id=int(comment_line[0]),
             comment_id=comment_line[1],
             comment_author=comment_line[2],
             comment_body=comment_line[3],
-            comment_body_corrected=comment_line[4],
+            comment_body_adjusted=comment_line[4],
             comment_created=int(comment_line[5]),
-            comment_upvotes=int(comment_line[6]),
+            comment_up_votes=int(comment_line[6]),
             subreddit=comment_line[7],
-            comment_labels=comment_line[8],
-            comment_regex=comment_line[9]
+            comment_personal_labels=int(comment_line[8]),
+            comment_bert_labels=int(comment_line[9])
         )
 
 
@@ -89,7 +89,6 @@ if __name__ == '__main__':
     base_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     csv_path_post_dataset = os.path.join(base_path, 'Dataset', 'Post_Dataset.csv')
     csv_path_comment_dataset = os.path.join(base_path, 'Dataset', 'Comment_Dataset.csv')
-
 
     sendCSV = ImportCSVData(csv_path_post_dataset, csv_path_comment_dataset)
     sendCSV.readData()

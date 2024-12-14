@@ -1,33 +1,3 @@
-Instruction to create API Call to Reddit
-
-Requirement Postman Account
-
------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-# With this API Call we create an access_token which will be needed to access the endpoints (expires in 1 Day)
-
-# Import Curl Request to Postman
-curl -X POST -d 'grant_type=password&username=reddit_bot&password=snoo' --user 'p-jcoLKBynTLew:gko_LXELoV07ZBNUXrvWZfzE3aI' https://www.reddit.com/api/v1/access_token
-
-# Change the username and password (Body)
-#username = {login username - (Otherwise-Animal-815)}
-#password = {login password - (artoria49)}
-
-# Change the username and password (Authorization)
-username = {app username - (UApGYU9gKlsqRmU_ZJQXtA)}
-password = {app client_secret - (532u8p5mDoP1XA5VpAlxhr6QOzm2gw)}
-
------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-# Creating another API Call to retrieve the resource from the endpoint
-
-# Import Curl Request to Postman
-curl -H "Authorization: bearer J1qK1c18UUGJFAzz9xnH56584l4" -A "ChangeMeClient/0.1 by YourUsername" https://oauth.reddit.com/api/v1/me
-
-# Change in Authorization the Bearer with that which was outputted in 1st Curl Request
-Authorization = {Bearer <access_token>}
-
-# URL can be changed with the endpoint for more information: https://www.reddit.com/dev/api
-https://oauth.reddit.com/
-
------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-Link to Curl Request: https://github.com/reddit-archive/reddit/wiki/OAuth2-Quick-Start-Example
-Link to Tutorial: https://youtu.be/x9boO9x3TDA?si=lMWbXdvlpSwdRWIq
+version https://git-lfs.github.com/spec/v1
+oid sha256:83f2883c35ecd0e876e636e52659ac2d82796307fd412b0f924724968537c2f3
+size 1848

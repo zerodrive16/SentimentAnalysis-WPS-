@@ -23,7 +23,7 @@ class FilterRegex:
     def iterateData(self):
         for record in all_records:
             comment_regex = self.performRegex(record.comment_body)
-            record.comment_body_corrected = comment_regex
+            record.comment_body_adjusted = comment_regex
             record.save()
 
 
