@@ -1,7 +1,9 @@
 import os
 import subprocess
-from django.shortcuts import render
 
+from django.http import JsonResponse
+from django.shortcuts import render
+from WebApplication.models import Data
 
 # Create your views here.
 
@@ -9,6 +11,11 @@ from django.shortcuts import render
 # Calling the Web Application
 def home(request):
     return render(request, "index.html")
+
+
+def dataset(request):
+    data = list(Data.objects.values())
+    return JsonResponse(data, safe=False)
 
 
 # Calling the Machine Learning Script

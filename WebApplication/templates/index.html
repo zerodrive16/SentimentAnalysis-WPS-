@@ -12,6 +12,8 @@
     <link rel="stylesheet" href="static/style.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script defer src="static/script.js"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body class="light-mode">
@@ -130,14 +132,114 @@
             <!-- Space for additional info -->
             <div class="card mb-5">
                 <div class="card-body">
-                    <h5 class="card-title">Statistic 2</h5>
-                    <p class="card-text">This is the third column. You can customize it with more Bootstrap components.</p>
+                    <h5 class="card-title">Personal Labeling</h5>
+                    <!-- Create a canvas element for the pie chart -->
+                    <canvas id="personalLabeling"></canvas>
+                    <script>
+                        fetch('/dataset/')
+                            .then(response => response.json())
+                            .then(data => {
+                                console.log(data);
+                                const personalLabels = data.map(item => item.comment_personal_labels);
+
+                                const personalLabelCounts = {
+                                    positive: personalLabels.filter(label => label === 1).length,
+                                    negative: personalLabels.filter(label => label === 0).length
+                                };
+
+                                const personalDoughnutData = {
+                                    labels: ['positive', 'negative'],
+                                    datasets: [{
+                                        data: [personalLabelCounts.positive, personalLabelCounts.negative],
+                                        backgroundColor: ['#E3B026', '#082F89'],
+                                    }]
+                                };
+                                renderPersonalDoughnutChart(personalDoughnutData);
+                            }).catch(error => console.error('Error in fetching data:', error));
+
+                        function renderPersonalDoughnutChart(personalDoughnutData) {
+                            const ctx1 = document.getElementById('personalLabeling').getContext('2d');
+                            const personalDoughnutChart= new Chart(ctx1, {
+                                type: 'doughnut',
+                                data: personalDoughnutData,
+                                options: {
+                                    responsive: true,
+                                    plugins: {
+                                        legend: {
+                                            position: 'top',
+                                        },
+                                        tooltip: {
+                                            callbacks: {
+                                                label: function(tooltipItem) {
+                                                    return `${tooltipItem.label}: ${tooltipItem.raw}`;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            });
+                        }
+                    </script>
+                </div>
+            </div>
+            <!-- Space for additional info -->
+            <div class="card mb-5">
+                <div class="card-body">
+                    <h5 class="card-title">Bert Labeling</h5>
+                    <canvas id="bertLabeling"></canvas>
+                    <script>
+                        fetch('/dataset/')
+                            .then(response => response.json())
+                            .then(data => {
+                                console.log(data);
+                                const bertLabels = data.map(item => item.comment_bert_labels);
+
+                                const bertLabelCounts = {
+                                    positive: bertLabels.filter(label => label === 1).length,
+                                    negative: bertLabels.filter(label => label === 0).length
+                                };
+                                console.log(bertLabelCounts.positive)
+
+                                const bertDoughnutData = {
+                                    labels: ['positive', 'negative'],
+                                    datasets: [{
+                                        data: [bertLabelCounts.positive, bertLabelCounts.negative],
+                                        backgroundColor: ['#E3B026', '#082F89'],
+                                    }]
+                                };
+                                renderBertDoughnutChart(bertDoughnutData);
+                            }).catch(error => console.error('Error in fetching data:', error));
+
+                        function renderBertDoughnutChart(bertDoughnutData) {
+                            const ctx2 = document.getElementById('bertLabeling').getContext('2d');
+                            const bertDoughnutChart = new Chart(ctx2, {
+                                type: 'doughnut',
+                                data: bertDoughnutData,
+                                options: {
+                                    responsive: true,
+                                    plugins: {
+                                        legend: {
+                                            position: 'top',
+                                        },
+                                        tooltip: {
+                                            callbacks: {
+                                                label: function(tooltipItem2) {
+                                                    return `${tooltipItem2.label}: ${tooltipItem2.raw}`;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            });
+                        }
+                    </script>
                 </div>
             </div>
         </div>
     </div>
 </main>
 </body>
+
 
 <!-- Footer -->
 <footer class="bg-secondary text-white text-center py-3">
