@@ -32,9 +32,53 @@
                 </li>
             </ul>
             <form class="d-flex" role="search">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <button type="button" class="btn btn-primary me-2 text-nowrap" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Create Comment</button>
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" style="flex-grow: 2;">
                 <button class="btn btn-outline-success" type="submit">Search</button>
             </form>
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Create Comment</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Comment Form -->
+                        <form>
+                            <div class="input-group mb-3">
+                                <!-- Author Input -->
+                                <input type="text" class="form-control me-2" id="createCommentAuthor" placeholder="Author" aria-label="Author" required>
+                                <!-- Post ID Input -->
+                                <input type="text" class="form-control" id="checkPostId" placeholder="Post ID" aria-label="Post ID" required>
+                            </div>
+                            <!-- Comment Text Area -->
+                            <div class="input-group mb-3">
+                                <div class="form-control me-2" id="createTimestamp" aria-label="Timestamp"></div>
+                                <script>
+                                    function realTimeTimestamp(){
+                                        const timestampDiv = document.getElementById("createTimestamp");
+                                        const currentTimestamp = Math.floor(Date.now() / 1000);
+                                        timestampDiv.textContent = currentTimestamp;
+                                    }
+                                    setInterval(realTimeTimestamp, 1000);
+                                </script>
+                                <input type="text" class="form-control" id="createCommentLabel" placeholder="Label" aria-label="Label" required>
+                            </div>
+                            <div class="mb-3">
+                                <textarea class="form-control" id="createCommentContent" placeholder="Comment" aria-label="Textarea" required></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="createComment">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         </div>
     </div>
 </nav>
@@ -111,24 +155,6 @@
 
         <!-- Right Side -->
         <div class="col-md-3 mb-3">
-            <!-- Input comment -->
-            <div class="container mb-5">
-                    <div class="input-group mb-1">
-                        <!-- Input Name -->
-                        <input type="text" class="form-control" id="createCommentName" placeholder="Name" aria-label="Username" aria-describedby="button-addon2">
-                        <!-- Input Comment ID -->
-                        <input type="text" class="form-control" id="checkPostId" placeholder="Comment ID" aria-label="id">
-                    </div>
-                    <!-- Input Text -->
-                    <div class="input-group mb-1">
-                        <textarea class="form-control" id="createCommentContent" placeholder="Comment" aria-label="Textarea"></textarea>
-                    </div>
-                    <!-- Submit Button -->
-                    <div class="col-auto">
-                        <button type="submit" class="btn btn-primary" id="createComment">Submit</button>
-                    </div>
-            </div>
-
             <!-- Space for additional info -->
             <div class="card mb-5">
                 <div class="card-body">
@@ -139,7 +165,6 @@
                         fetch('/dataset/')
                             .then(response => response.json())
                             .then(data => {
-                                console.log(data);
                                 const personalLabels = data.map(item => item.comment_personal_labels);
 
                                 const personalLabelCounts = {
@@ -191,7 +216,6 @@
                         fetch('/dataset/')
                             .then(response => response.json())
                             .then(data => {
-                                console.log(data);
                                 const bertLabels = data.map(item => item.comment_bert_labels);
 
                                 const bertLabelCounts = {
