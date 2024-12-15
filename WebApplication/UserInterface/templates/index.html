@@ -9,9 +9,10 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <!-- External CSS -->
-    <link rel="stylesheet" href="static/style.css">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'style.css' %}">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <script defer src="static/script.js"></script>
+    <script defer src="../static/script.js"></script>
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -103,7 +104,6 @@
                                 <p class="mb-0">I totally agree with your post!</p>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -115,17 +115,17 @@
             <div class="container mb-5">
                     <div class="input-group mb-1">
                         <!-- Input Name -->
-                        <input type="text" class="form-control" id="floatingName" placeholder="Name" aria-label="Username" aria-describedby="button-addon2">
+                        <input type="text" class="form-control" id="createCommentName" placeholder="Name" aria-label="Username" aria-describedby="button-addon2">
                         <!-- Input Comment ID -->
-                        <input type="text" class="form-control" placeholder="Comment ID" aria-label="id">
+                        <input type="text" class="form-control" id="checkPostId" placeholder="Comment ID" aria-label="id">
                     </div>
                     <!-- Input Text -->
                     <div class="input-group mb-1">
-                        <textarea class="form-control" id="floatingComment" placeholder="Comment" aria-label="Textarea"></textarea>
+                        <textarea class="form-control" id="createCommentContent" placeholder="Comment" aria-label="Textarea"></textarea>
                     </div>
                     <!-- Submit Button -->
                     <div class="col-auto">
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="submit" class="btn btn-primary" id="createComment">Submit</button>
                     </div>
             </div>
 
@@ -198,7 +198,6 @@
                                     positive: bertLabels.filter(label => label === 1).length,
                                     negative: bertLabels.filter(label => label === 0).length
                                 };
-                                console.log(bertLabelCounts.positive)
 
                                 const bertDoughnutData = {
                                     labels: ['positive', 'negative'],
