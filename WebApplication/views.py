@@ -1,11 +1,22 @@
-import os
-import subprocess
-
+import torch
 from django.http import JsonResponse
 from django.shortcuts import render
-from WebApplication.models import Data
+from transformers import AutoTokenizer, AutoModelForSequenceClassification
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from .models import Data
+from .serializers import DataSerializer
 
-# Create your views here.
+# Model and Tokenizer
+preTrainedModel = "distilbert-base-uncased-finetuned-sst-2-english"
+tokenizer = AutoTokenizer.from_pretrained(preTrainedModel)
+model = AutoModelForSequenceClassification.from_pretrained(preTrainedModel)
+
+# Settings up the device
+device = torch.device("cuda" if torch.cuda.is_available() else torch.device("cpu"))
+model.to(device)
+model.eval()
 
 
 # Calling the Web Application
@@ -18,38 +29,54 @@ def dataset(request):
     return JsonResponse(data, safe=False)
 
 
-# Calling the Machine Learning Script
-def runMLScript(request):
-    script_path = os.path.join('WebApplication', 'Text_Preprocessing', 'import_csv.py')
+class PostAcceptance(APIView):
+    def post(self, request):
+        try:
+            input_data = request.data
 
-    try:
-        result = subprocess.run(['python', script_path], capture_output=True, text=True)
-        output = result.stdout
-        error = result.stderr
-    except Exception as e:
-        output = f"Error occurred: {str(e)}"
-        error = None
+            # Tokenizing
+            inputs = tokenizer([input_data.get('comment_body_adjusted')],
+                               padding=True,
+                               truncation=True,
+                               return_tensors="pt",
+                               max_length=512
+                               ).to(device)
+            with torch.no_grad():
+                outputs = model(**inputs)
+                probabilities = torch.nn.functional.softmax(outputs[0], dim=1)
+                predictions = torch.argmax(probabilities, dim=1).item()
 
-    context = {
-        'output': output,
-        'error': error
-    }
-    return render(request, "index.html", context)
+            input_data['comment_bert_labels'] = predictions
 
+            newComment = Data.objects.create(
+                post_id=input_data.get('post_id'),
+                post_author=input_data.get('post_author'),
+                post_title=input_data.get('post_title'),
+                post_created=input_data.get('post_created'),
+                post_up_votes=input_data.get('post_up_votes'),
+                c_id=input_data.get('c_id'),
+                comment_id=input_data.get('comment_id'),
+                comment_author=input_data.get('comment_author'),
+                comment_body=input_data.get('comment_body'),
+                comment_body_adjusted=input_data.get('comment_body_adjusted'),
+                comment_created=input_data.get('comment_created'),
+                comment_up_votes=input_data.get('comment_up_votes'),
+                subreddit=input_data.get('subreddit'),
+                comment_personal_labels=input_data.get('comment_personal_labels'),
+                comment_bert_labels=input_data.get('comment_bert_labels')
+            )
 
-def regex(request):
-    script_path = os.path.join('Backend_ML', 'Text_Preprocessing', 'filter_regex.py')
+            serializedData = DataSerializer(newComment).data
+            return Response(serializedData, status=status.HTTP_201_CREATED)
 
-    try:
-        result = subprocess.run(['python', script_path], capture_output=True, text=True)
-        output = result.stdout
-        error = result.stderr
-    except Exception as e:
-        output = f"Error occurred: {str(e)}"
-        error = None
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-    context = {
-        'output': output,
-        'error': error
-    }
-    return render(request, "index.html", context)
+    def get(self, request):
+        try:
+            allData = Data.objects.all()
+            serializedData = DataSerializer(allData, many=True).data
+            return Response(serializedData, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+

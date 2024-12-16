@@ -9,19 +9,19 @@ function toggleDarkmode() {
 document.getElementById("theme-toggle").addEventListener("click", toggleDarkmode);
 
 
+// Create a new Comment
 async function createNewComment(){
     const author = document.getElementById("createCommentAuthor").value;
     const postId = document.getElementById("checkPostId").value;
     const comment_body = document.getElementById("createCommentContent").value;
     const timestamp = document.getElementById("createTimestamp").textContent;
     const personalLabel = document.getElementById("createCommentLabel").value;
-    let comment_id = 0;
-    comment_id++;
+    const comment_id = incrementCommentId();
     const comment_body_adjusted = commentRegex(comment_body);
 
     let dataset;
     try {
-        dataset = await retrieveDataFromServer();
+        dataset = await retrieveDataFromServer(postId);
         if(!dataset){
             console.error("Dataset is not retrieved");
             return;
@@ -47,7 +47,7 @@ async function createNewComment(){
         comment_up_votes: 1,
         subreddit: "AskReddit",
         comment_personal_labels: personalLabel,
-        comment_bert_labels: "pass"
+        comment_bert_labels: -1
     };
 
     // Check if any of the above attributes exists
@@ -59,7 +59,7 @@ async function createNewComment(){
             }
         }
     }
-    console.log(data);
+    await sendToPythonScript(data);
 
     // Clear everything
     document.getElementById("createCommentAuthor").value = "";
@@ -71,6 +71,7 @@ document.getElementById("createComment").addEventListener("click", function(){
     createNewComment();
 });
 
+// Regex for Comment Body
 function commentRegex(comment_body){
     // Remove emojis and non-printable characters
     let regexComment = comment_body.replace(/[^\x00-\x7F]+/g, '');
@@ -81,20 +82,95 @@ function commentRegex(comment_body){
     return regexComment;
 }
 
-async function retrieveDataFromServer(){
+// Retrieving the Dataset from JavaScript to Python
+async function retrieveDataFromServer(postId){
     try {
         const response = await fetch("/dataset/");
         const data = await response.json();
-        const getRow = data.find(item => item.comment_id === "lyewszs");
+        const getRow = data.find(item => item.post_id === postId);
         if(getRow) {
             return getRow;
         } else {
+            if(getRow.post_id !== postId) {
+                showAlert("The PostId is wrong. Give a proper Id!");
+            }
             console.log("Row doesn't exist");
         }
     } catch(error) {
         console.error("Error in fetching data!", error);
         return null;
     }
+}
+
+// Sending data with API to Python Script
+async function sendToPythonScript(data){
+    try {
+        const csrfToken = getCSRFToken();
+        const response = await fetch("/api/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": csrfToken,
+            },
+            body: JSON.stringify(data),
+        });
+        if(response.ok){
+            const result = await response.json();
+            console.log("The API call worked with these result: ", result);
+        } else {
+            const errorResult = await response.text();
+            console.error("Error in sending the data to the Script:", errorResult);
+        }
+    } catch(error) {
+        console.log("Error in sending to Python Script");
+    }
+}
+
+// Get CSRF Token to share resources
+function getCSRFToken() {
+    const name = "csrftoken";
+    const cookies = document.cookie.split("; ");
+    for (let cookie of cookies) {
+        const [key, ...valueParts] = cookie.split("=");
+        if(key === name) {
+            return valueParts.join("=");
+        }
+    }
+    return null;
+}
+
+// Incrementing the CommentId to keep uniqueness
+function incrementCommentId(){
+    let commentCounter = parseInt(localStorage.getItem("commentCounter") || "0", 10);
+    commentCounter++;
+    localStorage.setItem("commentCounter", commentCounter);
+    return commentCounter
+}
+
+function showAlert(message) {
+    // Create a div element for the alert
+    const alertElement = document.createElement("div");
+    alertElement.style.position = "fixed";
+    alertElement.style.top = "20px";
+    alertElement.style.left = "50%";
+    alertElement.style.transform = "translateX(-50%)";
+    alertElement.style.backgroundColor = "#f8d7da";
+    alertElement.style.color = "#721c24";
+    alertElement.style.padding = "10px 20px";
+    alertElement.style.border = "1px solid #f5c6cb";
+    alertElement.style.borderRadius = "5px";
+    alertElement.style.zIndex = "9999";
+    alertElement.style.fontSize = "16px";
+    alertElement.style.boxShadow = "0 2px 10px rgba(0, 0, 0, 0.1)";
+    alertElement.textContent = message;
+
+    // Append the alert to the body
+    document.body.appendChild(alertElement);
+
+    // Remove the alert after 5 seconds
+    setTimeout(() => {
+        alertElement.remove();
+    }, 5000);
 }
 
 

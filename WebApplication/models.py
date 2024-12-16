@@ -19,7 +19,7 @@ class Data(models.Model):
     comment_created = models.IntegerField()
     comment_up_votes = models.IntegerField(default=1)
     subreddit = models.CharField(max_length=15)
-    comment_personal_labels = models.IntegerField()
+    comment_personal_labels = models.IntegerField(null=False, default=1)
     comment_bert_labels = models.IntegerField()
 
     def __str__(self):

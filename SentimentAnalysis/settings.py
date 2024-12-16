@@ -57,6 +57,15 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
 ]
 
+CSRF_COOKIE_NAME = "csrftoken"
+CSRF_COOKIE_HTTPONLY = False
+CSRF_COOKIE_SECURE = False  # Do not use Secure for localhost HTTP
+CSRF_COOKIE_SAMESITE = 'Lax'  # Or 'None' if needed for cross-origin requests
+CORS_ALLOW_ALL_ORIGINS = True  # Only for development, restrict for production
+
+CSRF_COOKIE_HTTPONLY = False
+
+
 ROOT_URLCONF = 'SentimentAnalysis.urls'
 
 TEMPLATES = [
