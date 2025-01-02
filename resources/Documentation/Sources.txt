@@ -1,3 +1,23 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:a3f9d64a2260c2ad5569a6285b67c2a8d70b82e92e36b29d4683786615a58a67
-size 726
+YouTube Videos:
+# Python Tutorial
+- https://youtu.be/ix9cRaBkVe0?si=2_wvcgkb5OXXPo2K
+
+# Machine Learning Tutorial
+- https://youtu.be/i_LwzRVP7bg?si=T9Owv1rbMGNcgWDo
+- https://www.youtube.com/@3blue1brown (Machine Learning Tutorial)
+
+# Django Database Set up
+- https://youtu.be/rI95wyHD_6k?si=TFfBXuXmKj2wBESZ
+- https://youtu.be/H3joYTIRqKk?si=vWnQ8cNuYJj-IfTy
+
+# Read a CSV File
+- https://youtu.be/q5uM4VKywbA?si=M1tdhRtAdd4Arjfz
+
+# API Call to Reddit
+- https://youtu.be/x9boO9x3TDA?si=nsOOu4xOv368WMO7
+
+Website:
+# Reddit API Documentation
+- https://www.reddit.com/dev/api#GET_subreddits_{where}
+# Instruction to API Header, Queries and Authorization
+- https://github.com/reddit-archive/reddit/wiki/OAuth2-Quick-Start-Example
