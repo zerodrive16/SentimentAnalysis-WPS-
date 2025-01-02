@@ -33,14 +33,9 @@ class PostAcceptance(APIView):
     def post(self, request):
         try:
             input_data = request.data
-
             # Tokenizing
-            inputs = tokenizer([input_data.get('comment_body_adjusted')],
-                               padding=True,
-                               truncation=True,
-                               return_tensors="pt",
-                               max_length=512
-                               ).to(device)
+            inputs = tokenizer([input_data.get('comment_body_adjusted')], padding=True, truncation=True,
+                               return_tensors="pt", max_length=512).to(device)
             with torch.no_grad():
                 outputs = model(**inputs)
                 probabilities = torch.nn.functional.softmax(outputs[0], dim=1)

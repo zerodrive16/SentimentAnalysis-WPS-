@@ -36,7 +36,6 @@ pip install <library>
 djangorestframework API calls
 Numpy               Numerical operations
 Pandas              Data manipulation
-tweepy              Twitter API access
 nltk                Natural language processing
 tensorflow          Machine learning and deep learning
 scikit-learn        Machine learning tools
