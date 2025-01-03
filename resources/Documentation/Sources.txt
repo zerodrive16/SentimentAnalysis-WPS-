@@ -5,6 +5,7 @@ YouTube Videos:
 # Machine Learning Tutorial
 - https://youtu.be/i_LwzRVP7bg?si=T9Owv1rbMGNcgWDo
 - https://www.youtube.com/@3blue1brown (Machine Learning Tutorial)
+- https://www.ibm.com/de-de/topics/machine-learning
 
 # Django Database Set up
 - https://youtu.be/rI95wyHD_6k?si=TFfBXuXmKj2wBESZ
