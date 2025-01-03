@@ -173,6 +173,19 @@ function showAlert(message) {
     }, 5000);
 }
 
+// PHI
+function retrieveDataFromServer(){
+    try {
+        const response = fetch("/retrieval/");
+        const data = response.json();
+        id = data.post_id
+        console.log(data);
+    } catch(error) {
+        console.error("Error in fetching data!", error);
+        return null;
+    }
+}
+
 
 
 

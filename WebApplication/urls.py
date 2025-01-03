@@ -9,5 +9,6 @@ urlpatterns = [
     path('dataset/', views.dataset, name='dataset'),
     # Send JavaScript Post request (data) back to Python Script
     path("api/", PostAcceptance.as_view(), name='post-comment'),
+    path("retrieval/", views.dataset_retrieval, name='dataset-retrieval')
 ]
 

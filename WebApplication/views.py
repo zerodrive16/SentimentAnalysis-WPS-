@@ -28,6 +28,9 @@ def dataset(request):
     data = list(Data.objects.values())
     return JsonResponse(data, safe=False)
 
+def dataset_retrieval(request):
+    return JsonResponse(data, safe=False)
+
 
 class PostAcceptance(APIView):
     def post(self, request):
