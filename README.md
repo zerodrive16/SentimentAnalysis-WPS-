@@ -1,8 +1,1 @@
-# SentinmentAnalysis-WPS-
-Wahlpflicht Seminar (Sentiment Anaylsis)
-
-API Key X: 5SQ9nA5FeZOY7Rm3aRkdjrFbj
-API Key Secret: AhniPUMQSKqeCxtBlBZ711y6uvTw1fRFhffvv0z9FJo4AtRZfi
-Access Token: 1854150480022446080-Up9NPbmW3aTCUfWUyMAdLJom3wcty9
-Acces Token Secret: hKdCjSZda6cthZ6XDwrtPNlOOzuqeP2kmVGKRAL54k9dZ
-Bearer: AAAAAAAAAAAAAAAAAAAAANhGwwEAAAAAIVCpznhjZWCc38%2BpjBkw%2FewIt%2Fc%3D27XDVLqiNRqLxcRGq7TflSYLb8ISphw1s76YWXm2TleGuqLpPZ
+Sentiment Analysis Projekt
