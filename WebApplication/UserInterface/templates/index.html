@@ -1,272 +1,431 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Document</title>
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+    />
     <!-- External CSS -->
     {% load static %}
-    <link rel="stylesheet" href="{% static 'style.css' %}">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{% static 'style.css' %}" />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
     <script defer src="../static/script.js"></script>
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
+  </head>
 
-<body class="light-mode">
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg bg-body-secondary">
-    <div class="container-fluid">
+  <body class="light-mode">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg bg-body-secondary">
+      <div class="container-fluid">
         <a class="navbar-brand" href="#">Sentiment Analysis</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <button id="theme-toggle" class="btn btn-secondary">Switch to Dark Mode</button>
-                </li>
-            </ul>
-            <form class="d-flex" role="search">
-                <button type="button" class="btn btn-primary me-2 text-nowrap" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    Create Comment</button>
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" style="flex-grow: 2;">
-                <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
-            <!-- Modal -->
-            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <!-- Create Comment Button-->
+
+          <ul class="navbar-nav ms-auto d-flex align-items-center mb-2 mb-lg-0">
+            <!-- Create Comment Button -->
+            <li class="nav-item me-2">
+              <button
+                type="button"
+                class="btn btn-primary text-nowrap"
+                data-bs-toggle="modal"
+                data-bs-target="#exampleModal"
+              >
+                Create Comment
+              </button>
+            </li>
+
+            <!-- Dark/Light Mode Button -->
+            <li class="nav-item">
+              <button id="theme-toggle" class="btn btn-secondary">
+                <i id="s1" class="bi bi-moon"></i>
+              </button>
+            </li>
+          </ul>
+
+          <!-- Modal -->
+          <div
+            class="modal fade"
+            id="exampleModal"
+            tabindex="-1"
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true"
+          >
             <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">Create Comment</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <!-- Comment Form -->
-                        <form>
-                            <div class="input-group mb-3">
-                                <!-- Author Input -->
-                                <input type="text" class="form-control me-2" id="createCommentAuthor" placeholder="Author" aria-label="Author" required>
-                                <!-- Post ID Input -->
-                                <input type="text" class="form-control" id="checkPostId" placeholder="Post ID" aria-label="Post ID" required>
-                            </div>
-                            <!-- Comment Text Area -->
-                            <div class="input-group mb-3">
-                                <div class="form-control me-2" id="createTimestamp" aria-label="Timestamp"></div>
-                                <script>
-                                    function realTimeTimestamp(){
-                                        const timestampDiv = document.getElementById("createTimestamp");
-                                        const currentTimestamp = Math.floor(Date.now() / 1000);
-                                        timestampDiv.textContent = currentTimestamp;
-                                    }
-                                    setInterval(realTimeTimestamp, 1000);
-                                </script>
-                                <input type="text" class="form-control" id="createCommentLabel" placeholder="Label" aria-label="Label" required>
-                            </div>
-                            <div class="mb-3">
-                                <textarea class="form-control" id="createCommentContent" placeholder="Comment" aria-label="Textarea" required></textarea>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" id="createComment">Submit</button>
-                    </div>
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="exampleModalLabel">
+                    Create Comment
+                  </h1>
+                  <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button>
                 </div>
+                <div class="modal-body">
+                  <!-- Comment Form -->
+                  <form>
+                    <div class="input-group mb-3">
+                      <!-- Author Input -->
+                      <input
+                        type="text"
+                        class="form-control me-2"
+                        id="createCommentAuthor"
+                        placeholder="Author"
+                        aria-label="Author"
+                        required
+                      />
+                      <!-- Post ID Input -->
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="checkPostId"
+                        placeholder="Post ID"
+                        aria-label="Post ID"
+                        required
+                      />
+                    </div>
+                    <!-- Comment Text Area -->
+                    <div class="input-group mb-3">
+                      <div
+                        class="form-control me-2"
+                        id="createTimestamp"
+                        aria-label="Timestamp"
+                      ></div>
+                      <script>
+                        function realTimeTimestamp() {
+                          const timestampDiv =
+                            document.getElementById("createTimestamp");
+                          const currentTimestamp = Math.floor(
+                            Date.now() / 1000
+                          );
+                          timestampDiv.textContent = currentTimestamp;
+                        }
+                        setInterval(realTimeTimestamp, 1000);
+                      </script>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="createCommentLabel"
+                        placeholder="Label"
+                        aria-label="Label"
+                        required
+                      />
+                    </div>
+                    <div class="mb-3">
+                      <textarea
+                        class="form-control"
+                        id="createCommentContent"
+                        placeholder="Comment"
+                        aria-label="Textarea"
+                        required
+                      ></textarea>
+                    </div>
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                  >
+                    Close
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-primary"
+                    id="createComment"
+                  >
+                    Submit
+                  </button>
+                </div>
+              </div>
             </div>
+          </div>
         </div>
-        </div>
-    </div>
-</nav>
+      </div>
+    </nav>
 
-<!-- Main Content -->
-<main class="container-fluid my-5">
-    <div class="row">
-
+    <!-- Main Content -->
+    <main class="container-fluid my-5">
+      <div class="row">
         <!-- Left Side -->
         <div class="col-md-2 sticky-left">
-            <div class="container mb-3">
-                <span class="border border-primary">
-                    <!-- Banner Ad -->
-                    <a href="https://example.com" target="_blank">
-                        <img src="https://i0.wp.com/beneaththetangles.com/wp-content/uploads/2022/04/saber-arturia-pendragon-standing-firm.png?resize=600%2C2500&ssl=1" class="card-img-top img-fluid" alt="Advertisement">
-                    </a>
-                </span>
-            </div>
+          <div class="container mb-3">
+            <span class="border border-primary">
+              <!-- Banner Ad -->
+              <a href="https://example.com" target="_blank">
+                <img
+                  src="https://i0.wp.com/beneaththetangles.com/wp-content/uploads/2022/04/saber-arturia-pendragon-standing-firm.png?resize=600%2C2500&ssl=1"
+                  class="card-img-top img-fluid"
+                  alt="Advertisement"
+                />
+              </a>
+            </span>
+          </div>
         </div>
 
         <!-- Middle Column: Social Media Post Feed -->
         <div class="col-md-6">
+          <!-- Post Feed -->
+          <div class="post-feed">
+            <!-- Example Post 1 -->
+            <div class="card mb-3">
+              <div
+                class="card-body ms-2 p-2 d-flex justify-content-between align-items-center"
+              >
+                <!-- Name -->
+                <h6 class="card-title">KeshaEUW</h6>
+                <!-- Comment ID -->
+                <span class="text">Post ID: 1</span>
+              </div>
+              <div class="card-body ms-2 p-2">
+                <p class="card-text">WE WIN THOOOOOOOOOOSE!!!!</p>
+              </div>
 
-            <!-- Post Feed -->
-            <div class="post-feed">
-                <!-- Example Post 1 -->
-                <div class="card mb-3">
-                    <div class="card-body ms-2 p-2 d-flex justify-content-between align-items-center">
-                        <!-- Name -->
-                        <h6 class="card-title">KeshaEUW</h6>
-                        <!-- Comment ID -->
-                        <span class="text-muted">Post ID: 1</span>
-                    </div>
-                    <div class="card-body ms-2 p-2">
-                        <p class="card-text">WE WIN THOOOOOOOOOOSE!!!!</p>
-                    </div>
+              <div class="card-footer">
+                <!-- Comment Section -->
+                <h6 class="text">Comments</h6>
 
-                    <div class="card-footer">
-                        <!-- Comment Section -->
-                        <h6 class="text-muted">Comments</h6>
-
-                        <!-- Single Comment -->
-                        <div class="card mb-2">
-                            <div class="card-body p-2 d-flex justify-content-between align-items-center">
-                                <!-- Name -->
-                                <strong>T1 Gumayusi:</strong>
-                                <!-- Comment ID -->
-                                <span class="text-muted">Comment #1</span>
-                            </div>
-                            <div class="card-body p-2">
-                                <!-- Comment Body -->
-                                <p class="mb-0">Great post!</p>
-                            </div>
-                        </div>
-
-
-                        <!-- Another Comment -->
-                        <div class="card mb-2">
-                            <div class="card-body p-2 d-flex justify-content-between align-items-center">
-                                <!-- Name -->
-                                <strong>T1 Faker:</strong>
-                                <!-- Comment ID -->
-                                <span class="text-muted">Comment #2</span>
-                            </div>
-                            <div class="card-body p-2">
-                                <!-- Comment Body -->
-                                <p class="mb-0">I totally agree with your post!</p>
-                            </div>
-                        </div>
-                    </div>
+                <!-- Single Comment -->
+                <div class="card mb-2">
+                  <div
+                    class="card-body p-2 d-flex justify-content-between align-items-center"
+                  >
+                    <!-- Name -->
+                    <strong>T1 Gumayusi:</strong>
+                    <!-- Comment ID -->
+                    <span class="text">Comment #1</span>
+                  </div>
+                  <div class="card-body p-2">
+                    <!-- Comment Body -->
+                    <p class="mb-0">Great post!</p>
+                  </div>
                 </div>
+
+                <!-- Another Comment -->
+                <div class="card mb-2">
+                  <div
+                    class="card-body p-2 d-flex justify-content-between align-items-center"
+                  >
+                    <!-- Name -->
+                    <strong>T1 Faker:</strong>
+                    <!-- Comment ID -->
+                    <span class="text">Comment #2</span>
+                  </div>
+                  <div class="card-body p-2">
+                    <!-- Comment Body -->
+                    <p class="mb-0">I totally agree with your post!</p>
+                  </div>
+                </div>
+              </div>
             </div>
+          </div>
         </div>
 
         <!-- Right Side -->
         <div class="col-md-3 mb-3">
-            <!-- Space for additional info -->
-            <div class="card mb-5">
-                <div class="card-body">
-                    <h5 class="card-title">Personal Labeling</h5>
-                    <!-- Create a canvas element for the pie chart -->
-                    <canvas id="personalLabeling"></canvas>
-                    <script>
-                        fetch('/dataset/')
-                            .then(response => response.json())
-                            .then(data => {
-                                const personalLabels = data.map(item => item.comment_personal_labels);
+          <!-- Space for additional info -->
+          <div class="card mb-5">
+            <div class="card-body">
+              <h5 class="card-title">Personal Labeling</h5>
+              <!-- Create a canvas element for the pie chart -->
+              <canvas id="personalLabeling"></canvas>
+              <script>
+                fetch("/dataset/")
+                  .then((response) => response.json())
+                  .then((data) => {
+                    const personalLabels = data.map(
+                      (item) => item.comment_personal_labels
+                    );
 
-                                const personalLabelCounts = {
-                                    positive: personalLabels.filter(label => label === 1).length,
-                                    negative: personalLabels.filter(label => label === 0).length
-                                };
+                    const personalLabelCounts = {
+                      positive: personalLabels.filter((label) => label === 1)
+                        .length,
+                      negative: personalLabels.filter((label) => label === 0)
+                        .length,
+                    };
 
-                                const personalDoughnutData = {
-                                    labels: ['positive', 'negative'],
-                                    datasets: [{
-                                        data: [personalLabelCounts.positive, personalLabelCounts.negative],
-                                        backgroundColor: ['#E3B026', '#082F89'],
-                                    }]
-                                };
-                                renderPersonalDoughnutChart(personalDoughnutData);
-                            }).catch(error => console.error('Error in fetching data:', error));
+                    const personalDoughnutData = {
+                      labels: ["positive", "negative"],
+                      datasets: [
+                        {
+                          data: [
+                            personalLabelCounts.positive,
+                            personalLabelCounts.negative,
+                          ],
+                          backgroundColor: ["#F4DEAE", "#333A64"],
+                        },
+                      ],
+                    };
+                    renderPersonalDoughnutChart(personalDoughnutData);
+                  })
+                  .catch((error) =>
+                    console.error("Error in fetching data:", error)
+                  );
 
-                        function renderPersonalDoughnutChart(personalDoughnutData) {
-                            const ctx1 = document.getElementById('personalLabeling').getContext('2d');
-                            const personalDoughnutChart= new Chart(ctx1, {
-                                type: 'doughnut',
-                                data: personalDoughnutData,
-                                options: {
-                                    responsive: true,
-                                    plugins: {
-                                        legend: {
-                                            position: 'top',
-                                        },
-                                        tooltip: {
-                                            callbacks: {
-                                                label: function(tooltipItem) {
-                                                    return `${tooltipItem.label}: ${tooltipItem.raw}`;
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            });
-                        }
-                    </script>
-                </div>
+                function renderPersonalDoughnutChart(personalDoughnutData) {
+                  const ctx1 = document
+                    .getElementById("personalLabeling")
+                    .getContext("2d");
+                  const personalDoughnutChart = new Chart(ctx1, {
+                    type: "doughnut",
+                    data: personalDoughnutData,
+                    options: {
+                      responsive: true,
+                      plugins: {
+                        legend: {
+                          position: "top",
+                        },
+                        tooltip: {
+                          callbacks: {
+                            label: function (tooltipItem) {
+                              return `${tooltipItem.label}: ${tooltipItem.raw}`;
+                            },
+                          },
+                        },
+                      },
+                    },
+                  });
+                }
+                /*
+                document
+                  .getElementById("theme-toggle")
+                  .addEventListener("click", function () {
+                    isDarkMode = !isDarkMode;
+                    console.log("hallo");
+
+                    // Update Colors for Dark Mode
+                    if (isDarkMode) {
+                      personalDoughnutChart.data.datasets[0].backgroundColor = [
+                        "#FF6384",
+                        "#36A2EB",
+                        "#FFCE56",
+                      ].map((color) => darkenColor(color));
+                      personalDoughnutChart.options.plugins.legend.labels.color =
+                        "#ffffff"; // Dark Mode Text Color
+                      personalDoughnutChart.options.backgroundColor = "#333333"; // Optional chart area background
+                    } else {
+                      // Revert to Light Mode Colors
+                      personalDoughnutChart.data.datasets[0].backgroundColor = [
+                        "#FF6384",
+                        "#36A2EB",
+                        "#FFCE56",
+                      ];
+                      personalDoughnutChart.options.plugins.legend.labels.color =
+                        "#000000"; // Light Mode Text Color
+                    }
+
+                    // Update Chart
+                    doughnutChart.update();
+                  });
+                  */
+              </script>
             </div>
-            <!-- Space for additional info -->
-            <div class="card mb-5">
-                <div class="card-body">
-                    <h5 class="card-title">Bert Labeling</h5>
-                    <canvas id="bertLabeling"></canvas>
-                    <script>
-                        fetch('/dataset/')
-                            .then(response => response.json())
-                            .then(data => {
-                                const bertLabels = data.map(item => item.comment_bert_labels);
+          </div>
+          <!-- Space for additional info -->
+          <div class="card mb-5">
+            <div class="card-body">
+              <h5 class="card-title">Bert Labeling</h5>
+              <canvas id="bertLabeling"></canvas>
+              <script>
+                fetch("/dataset/")
+                  .then((response) => response.json())
+                  .then((data) => {
+                    const bertLabels = data.map(
+                      (item) => item.comment_bert_labels
+                    );
 
-                                const bertLabelCounts = {
-                                    positive: bertLabels.filter(label => label === 1).length,
-                                    negative: bertLabels.filter(label => label === 0).length
-                                };
+                    const bertLabelCounts = {
+                      positive: bertLabels.filter((label) => label === 1)
+                        .length,
+                      negative: bertLabels.filter((label) => label === 0)
+                        .length,
+                    };
 
-                                const bertDoughnutData = {
-                                    labels: ['positive', 'negative'],
-                                    datasets: [{
-                                        data: [bertLabelCounts.positive, bertLabelCounts.negative],
-                                        backgroundColor: ['#E3B026', '#082F89'],
-                                    }]
-                                };
-                                renderBertDoughnutChart(bertDoughnutData);
-                            }).catch(error => console.error('Error in fetching data:', error));
+                    const bertDoughnutData = {
+                      labels: ["positive", "negative"],
+                      datasets: [
+                        {
+                          data: [
+                            bertLabelCounts.positive,
+                            bertLabelCounts.negative,
+                          ],
+                          backgroundColor: ["#F4DEAE", "#333A64"],
+                        },
+                      ],
+                    };
+                    renderBertDoughnutChart(bertDoughnutData);
+                  })
+                  .catch((error) =>
+                    console.error("Error in fetching data:", error)
+                  );
 
-                        function renderBertDoughnutChart(bertDoughnutData) {
-                            const ctx2 = document.getElementById('bertLabeling').getContext('2d');
-                            const bertDoughnutChart = new Chart(ctx2, {
-                                type: 'doughnut',
-                                data: bertDoughnutData,
-                                options: {
-                                    responsive: true,
-                                    plugins: {
-                                        legend: {
-                                            position: 'top',
-                                        },
-                                        tooltip: {
-                                            callbacks: {
-                                                label: function(tooltipItem2) {
-                                                    return `${tooltipItem2.label}: ${tooltipItem2.raw}`;
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            });
-                        }
-                    </script>
-                </div>
+                function renderBertDoughnutChart(bertDoughnutData) {
+                  const ctx2 = document
+                    .getElementById("bertLabeling")
+                    .getContext("2d");
+                  const bertDoughnutChart = new Chart(ctx2, {
+                    type: "doughnut",
+                    data: bertDoughnutData,
+                    options: {
+                      responsive: true,
+                      plugins: {
+                        legend: {
+                          position: "top",
+                        },
+                        tooltip: {
+                          callbacks: {
+                            label: function (tooltipItem2) {
+                              return `${tooltipItem2.label}: ${tooltipItem2.raw}`;
+                            },
+                          },
+                        },
+                      },
+                    },
+                  });
+                }
+              </script>
             </div>
+          </div>
         </div>
-    </div>
-</main>
-</body>
+      </div>
+    </main>
+  </body>
 
-
-<!-- Footer -->
-<footer class="bg-secondary text-white text-center py-3">
-    <p>&copy; 2024 Reddit Check Website. All rights reserved.</p>
-</footer>
-
+  <!-- Footer -->
+  <footer class="bg-secondary text-white text-center py-3">
+    <p>&copy; 2024 Website. All rights reserved.</p>
+  </footer>
 </html>

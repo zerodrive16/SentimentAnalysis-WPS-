@@ -1,42 +1,33 @@
-:root {
-    color-scheme: light dark;
-}
-
-body{
-    color: light-dark(#1a598f, #ffffff);
-    background-color: light-dark(#eeede9, #234e98)
-}
-
 /* Light Mode Colors */
 :root {
-    --bg-color: #eeede9;
-    --text-color: #000;
-    --card-bg: #f8f9fa;
-    --btn-bg: #6c757d;
-    --btn-text: #fff;
+  --bg-color: #dedeea;
+  --text-color: #1a1f4b;
+  --card-bg: #f8f9fa;
+  --btn-bg: #333a64;
+  --btn-text: #fff;
 }
 
 /* Dark Mode Colors */
 body.dark-mode {
-    --bg-color: #121212;
-    --text-color: #f8f9fa;
-    --card-bg: #1e1e1e;
-    --btn-bg: #343a40;
-    --btn-text: #fff;
+  --bg-color: #262334;
+  --text-color: #eae2d9;
+  --card-bg: #403c53;
+  --btn-bg: #541413;
+  --btn-text: #fff;
 }
 
 /* General Styles Using Variables */
 body {
-    background-color: var(--bg-color);
-    color: var(--text-color);
+  background-color: var(--bg-color);
+  color: var(--text-color);
 }
 
 .card {
-    background-color: var(--card-bg);
-    color: var(--text-color);
+  background-color: var(--card-bg);
+  color: var(--text-color);
 }
 
 button {
-    background-color: var(--btn-bg);
-    color: var(--btn-text);
+  background-color: var(--btn-bg);
+  color: var(--btn-text);
 }
