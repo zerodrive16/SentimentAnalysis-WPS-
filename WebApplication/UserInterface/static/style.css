@@ -31,3 +31,28 @@ button {
   background-color: var(--btn-bg);
   color: var(--btn-text);
 }
+
+@keyframes border-animation {
+  0% {
+    border-color: red;
+  }
+  20% {
+    border-color: orange;
+  }
+  50% {
+    border-color: yellow;
+  }
+  75% {
+    border-color: green;
+  }
+  100% {
+    border-color: blue;
+  }
+}
+
+.animated-border {
+  border-width: 4px;
+  border-style: solid;
+  border-color: red;
+  animation: border-animation 3s linear infinite;
+}

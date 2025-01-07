@@ -197,9 +197,9 @@
         </div>
 
         <!-- Middle Column: Social Media Post Feed -->
-        <div class="col-md-6">
+        <div class="container animated-border col-md-6">
           <!-- Post Feed -->
-          <div class="post-feed">
+          <div class="post-feed" id="post-feed">
             <!-- Example Post 1 -->
             <div class="card mb-3">
               <div
@@ -318,39 +318,40 @@
                       },
                     },
                   });
+                  let isDarkMode = false;
+                  document
+                    .getElementById("theme-toggle")
+                    .addEventListener("click", function () {
+                      isDarkMode = !isDarkMode;
+
+                      if (isDarkMode) {
+                        // Dark Mode Colors
+                        personalDoughnutChart.data.datasets[0].backgroundColor =
+                          [
+                            "#AB180B", // Positive Dark
+                            "#636E9A", // Negative Dark
+                          ];
+                        personalDoughnutChart.options.plugins.legend.labels.color =
+                          "#ffffff"; // Dark Mode Text Color
+                        personalDoughnutChart.options.backgroundColor =
+                          "#333333"; // Optional chart area background
+                      } else {
+                        // Light Mode Colors
+                        personalDoughnutChart.data.datasets[0].backgroundColor =
+                          [
+                            "#F4DEAE", // Positive Light
+                            "#333A64", // Negative Light
+                          ];
+                        personalDoughnutChart.options.plugins.legend.labels.color =
+                          "#000000"; // Light Mode Text Color
+                        personalDoughnutChart.options.backgroundColor =
+                          "#FFFFFF"; // Light Mode Chart Area Background
+                      }
+
+                      // Update Chart
+                      personalDoughnutChart.update();
+                    });
                 }
-                /*
-                document
-                  .getElementById("theme-toggle")
-                  .addEventListener("click", function () {
-                    isDarkMode = !isDarkMode;
-                    console.log("hallo");
-
-                    // Update Colors for Dark Mode
-                    if (isDarkMode) {
-                      personalDoughnutChart.data.datasets[0].backgroundColor = [
-                        "#FF6384",
-                        "#36A2EB",
-                        "#FFCE56",
-                      ].map((color) => darkenColor(color));
-                      personalDoughnutChart.options.plugins.legend.labels.color =
-                        "#ffffff"; // Dark Mode Text Color
-                      personalDoughnutChart.options.backgroundColor = "#333333"; // Optional chart area background
-                    } else {
-                      // Revert to Light Mode Colors
-                      personalDoughnutChart.data.datasets[0].backgroundColor = [
-                        "#FF6384",
-                        "#36A2EB",
-                        "#FFCE56",
-                      ];
-                      personalDoughnutChart.options.plugins.legend.labels.color =
-                        "#000000"; // Light Mode Text Color
-                    }
-
-                    // Update Chart
-                    doughnutChart.update();
-                  });
-                  */
               </script>
             </div>
           </div>
@@ -415,6 +416,35 @@
                       },
                     },
                   });
+                  let isDarkMode = false;
+                  document
+                    .getElementById("theme-toggle")
+                    .addEventListener("click", function () {
+                      isDarkMode = !isDarkMode;
+
+                      if (isDarkMode) {
+                        // Dark Mode Colors
+                        bertDoughnutChart.data.datasets[0].backgroundColor = [
+                          "#AB180B", // Positive Dark
+                          "#636E9A", // Negative Dark
+                        ];
+                        bertDoughnutChart.options.plugins.legend.labels.color =
+                          "#ffffff"; // Dark Mode Text Color
+                        bertDoughnutChart.options.backgroundColor = "#333333"; // Optional chart area background
+                      } else {
+                        // Light Mode Colors
+                        bertDoughnutChart.data.datasets[0].backgroundColor = [
+                          "#F4DEAE", // Positive Light
+                          "#333A64", // Negative Light
+                        ];
+                        bertDoughnutChart.options.plugins.legend.labels.color =
+                          "#000000"; // Light Mode Text Color
+                        bertDoughnutChart.options.backgroundColor = "#FFFFFF"; // Light Mode Chart Area Background
+                      }
+
+                      // Update Chart
+                      bertDoughnutChart.update();
+                    });
                 }
               </script>
             </div>

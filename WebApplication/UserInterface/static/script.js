@@ -1,7 +1,7 @@
 function toggleDarkmode() {
   const body = document.body;
   const isDarkMode = body.classList.toggle("dark-mode");
-  console.log("Toggle Dark Mode");
+  console.log("Theme toggled:", isDarkMode ? "Dark Mode" : "Light Mode");
 
   // Update button icon
   var icon = document.getElementById("s1");
