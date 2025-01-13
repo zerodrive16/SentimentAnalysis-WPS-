@@ -201,34 +201,54 @@ function retrieveDataFromServer() {
 function createPost(postAuthor, postId, postText, comments) {
   // Create the main post card
   const postCard = document.createElement("div");
-  postCard.className = "card mb-3";
+  postCard.className = "card animated-border mb-3";
 
   // Post header
   const postHeader = document.createElement("div");
   postHeader.className =
     "card-body ms-2 p-2 d-flex justify-content-between align-items-center";
   postHeader.innerHTML = `
-      <h6 class="card-title">${postAuthor}</h6>
-      <span class="text">Post ID: ${postId}</span>
-    `;
+    <h6 class="card-title">${postAuthor}</h6>
+    <span class="text">Post ID: ${postId}</span>
+  `;
 
   // Post content
   const postContent = document.createElement("div");
   postContent.className = "card-body ms-2 p-2";
   postContent.innerHTML = `<p class="card-text">${postText}</p>`;
 
-  // Comments section
+  // Post footer with comment toggle button
   const postFooter = document.createElement("div");
   postFooter.className = "card-footer";
 
-  // Comments header
+  // Create the toggle button for comments
+  const toggleButton = document.createElement("button");
+  toggleButton.className = "btn btn-link p-0 text-decoration-none";
+  toggleButton.setAttribute("type", "button");
+  toggleButton.setAttribute("data-bs-toggle", "collapse");
+  toggleButton.setAttribute("data-bs-target", `#commentsSection${postId}`);
+  toggleButton.setAttribute("aria-expanded", "false");
+  toggleButton.setAttribute("aria-controls", `commentsSection${postId}`);
+  toggleButton.textContent = "Show Comments";
+
+  toggleButton.addEventListener("click", () => {
+  const isExpanded = toggleButton.getAttribute("aria-expanded") === "true";
+  toggleButton.textContent = isExpanded ? "Hide Comments" : "Show Comments";
+});
+
+
+  // Create the comments section (initially collapsed)
+  const commentsSection = document.createElement("div");
+  commentsSection.className = "collapse mt-3";
+  commentsSection.id = `commentsSection${postId}`;
+
+  // Add comments header
   const commentsHeader = document.createElement("h6");
   commentsHeader.className = "text";
   commentsHeader.textContent = "Comments";
+  commentsSection.appendChild(commentsHeader);
 
-  postFooter.appendChild(commentsHeader);
-
-  // Loop through comments and add them to the comments section
+  // Loop through comments and add them
   comments.forEach((comment, index) => {
     const commentCard = document.createElement("div");
     commentCard.className = "card mb-2";
@@ -237,9 +257,9 @@ function createPost(postAuthor, postId, postText, comments) {
     commentHeader.className =
       "card-body p-2 d-flex justify-content-between align-items-center";
     commentHeader.innerHTML = `
-        <strong>${comment.author}:</strong>
-        <span class="text">Comment #${index + 1}</span>
-      `;
+      <strong>${comment.author}:</strong>
+      <span class="text">Comment #${index + 1}</span>
+    `;
 
     const commentBody = document.createElement("div");
     commentBody.className = "card-body p-2";
@@ -247,19 +267,30 @@ function createPost(postAuthor, postId, postText, comments) {
 
     commentCard.appendChild(commentHeader);
     commentCard.appendChild(commentBody);
-    postFooter.appendChild(commentCard);
+    commentsSection.appendChild(commentCard);
   });
 
   // Assemble the post card
+  postFooter.appendChild(toggleButton);
+  postFooter.appendChild(commentsSection);
+
   postCard.appendChild(postHeader);
   postCard.appendChild(postContent);
   postCard.appendChild(postFooter);
 
-  // Append the post card to a container on your page
+  // Append the post card to a container on the page
   document.getElementById("post-feed").appendChild(postCard);
 }
 
-createPost("KeshaEUW", 2, "WE WIN THOOOOOOOOOOSE!!!!", [
-  { author: "T1 Gumayusi", text: "Great post!" },
-  { author: "T1 Faker", text: "I totally agree with your post!" },
-]);
+// Loop all data
+document.addEventListener("DOMContentLoaded", () => {
+
+    retrieveDataFromServer();
+
+  createPost("KeshaEUW", 1, "WE WIN THOOOOOOOOOOSE!!!!", [
+    { author: "T1 Gumayusi", text: "Great post!" },
+    { author: "T1 Faker", text: "I totally agree with your post!" },
+  ]);
+
+
+});

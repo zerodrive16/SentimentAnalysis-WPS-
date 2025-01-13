@@ -2,9 +2,10 @@
 :root {
   --bg-color: #dedeea;
   --text-color: #1a1f4b;
-  --card-bg: #f8f9fa;
+  --card-bg: #fefefe;
   --btn-bg: #333a64;
   --btn-text: #fff;
+  --bd-color: #9ecaed;
 }
 
 /* Dark Mode Colors */
@@ -14,6 +15,7 @@ body.dark-mode {
   --card-bg: #403c53;
   --btn-bg: #541413;
   --btn-text: #fff;
+  --bd-color: #af342b;
 }
 
 /* General Styles Using Variables */
@@ -34,25 +36,23 @@ button {
 
 @keyframes border-animation {
   0% {
-    border-color: red;
+    border-color: var(--bg-color);
   }
-  20% {
-    border-color: orange;
-  }
+
   50% {
-    border-color: yellow;
+    border-color: var(--bd-color);
   }
-  75% {
-    border-color: green;
-  }
+
   100% {
-    border-color: blue;
+    border-color: var(--bg-color);
   }
 }
 
 .animated-border {
-  border-width: 4px;
+  border-width: 1px;
+  border-radius: 5px;
   border-style: solid;
-  border-color: red;
+  border-color: var(--bd-color);
+  box-shadow: 0 0 10px var(--bd-color);
   animation: border-animation 3s linear infinite;
 }
