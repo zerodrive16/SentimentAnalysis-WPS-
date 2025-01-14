@@ -28,7 +28,9 @@ def dataset(request):
     data = list(Data.objects.values())
     return JsonResponse(data, safe=False)
 
+
 def dataset_retrieval(request):
+    data = list(Data.objects.values())
     return JsonResponse(data, safe=False)
 
 

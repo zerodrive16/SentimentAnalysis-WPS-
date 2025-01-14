@@ -97,6 +97,8 @@ async function retrieveDataFromServer(postId) {
     const response = await fetch("/dataset/");
     const data = await response.json();
     const getRow = data.find((item) => item.post_id === postId);
+    const id = data.id;
+    console.log(id);
     if (getRow) {
       return getRow;
     } else {
@@ -186,12 +188,12 @@ function showAlert(message) {
 }
 
 // PHI
-function retrieveDataFromServer() {
+function retrieveDataFromServer2() {
   try {
     const response = fetch("/retrieval/");
     const data = response.json();
-    id = data.post_id;
     console.log(data);
+    return data;
   } catch (error) {
     console.error("Error in fetching data!", error);
     return null;
@@ -285,12 +287,10 @@ function createPost(postAuthor, postId, postText, comments) {
 // Loop all data
 document.addEventListener("DOMContentLoaded", () => {
 
-    retrieveDataFromServer();
+  retrieveDataFromServer2();
 
   createPost("KeshaEUW", 1, "WE WIN THOOOOOOOOOOSE!!!!", [
     { author: "T1 Gumayusi", text: "Great post!" },
     { author: "T1 Faker", text: "I totally agree with your post!" },
   ]);
-
-
 });
