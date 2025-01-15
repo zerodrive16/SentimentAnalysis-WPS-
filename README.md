@@ -6,7 +6,7 @@ A tool for analyzing with an AI Integration, Post Comments from Reddit
 - Python 3.12 or later
 - pip (Python package manager)
 
-## 📦 Installation:
+## 📦 Installation
 Follow these steps to set up the application on your Mac 
 
 --- 
@@ -47,7 +47,7 @@ python manage.py runserver
 ```
 ---
 
-## 🎉 You are All Set! 
+## 🎉 You are All Set
 Your application is ready to use. If any issues encounter, feel free to raise an issue in the Github Repository (https://github.com/zerodrive16/SentimentAnalysis-WPS-) 
 
 ## 🚀 Features 
