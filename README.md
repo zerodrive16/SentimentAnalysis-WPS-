@@ -17,13 +17,13 @@ Copy the Repository to a desired folder or your IDE workspace
 https://github.com/zerodrive16/SentimentAnalysis-WPS-.git
 ```
 
-### 2. Create a Virtual Environment
+### 2. Create a Virtual Environment (MacOS)
 Run the following command to create a virtual environment in the project directory:
 ```bash
 python -m venv <name>
 ```
 
-### 3. Activate the Virtual Environment
+### 3. Activate the Virtual Environment (MacOS)
 Activate the Virtual Environment: 
 ```bash
 source <name>/bin/activate
