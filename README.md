@@ -1,5 +1,5 @@
 # 🚀 SentimentAnalysis
-A tool for analyzing with an AI Integration, Post Comments from Reddit 
+A tool for analyzing Text Content with AI Integration in Post, Comments from Reddit 
 ---
 
 ## 🔧 Prerequisites
@@ -30,17 +30,12 @@ source <name>/bin/activate
 ```
 
 ### 4. Installing packages
-Navigate to the project folder to access the requirements.txt file
-```bash
-cd /path/to/your/SentimentAnalysis-WPS-
-```
-
-After this the folder requirements.txt is accessible which can be downloaded 
+Install requirements.txt that includes all needed Packages
 ```bash
 pip install -r requirements.txt
 ```
 
-### 7. Starting the program
+### 5. Starting the program
 Start the Program to open the created Web Application
 ```bash
 python manage.py runserver
