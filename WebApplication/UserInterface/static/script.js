@@ -78,6 +78,10 @@ async function createNewComment() {
 }
 document.getElementById("createComment").addEventListener("click", function () {
   createNewComment();
+
+  const postsContainer = document.getElementById("post-feed");
+  postsContainer.innerHTML = "";
+  initialize();
 });
 
 // Regex for Comment Body
@@ -187,11 +191,11 @@ function showAlert(message) {
   }, 5000);
 }
 
-// PHI
-function retrieveDataFromServer2() {
+// retrieve Data to create post and comments
+async function retrieveCommentsData() {
   try {
-    const response = fetch("/retrieval/");
-    const data = response.json();
+    const response = await fetch("/retrieval/");
+    const data = await response.json();
     console.log(data);
     return data;
   } catch (error) {
@@ -234,10 +238,9 @@ function createPost(postAuthor, postId, postText, comments) {
   toggleButton.textContent = "Show Comments";
 
   toggleButton.addEventListener("click", () => {
-  const isExpanded = toggleButton.getAttribute("aria-expanded") === "true";
-  toggleButton.textContent = isExpanded ? "Hide Comments" : "Show Comments";
-});
-
+    const isExpanded = toggleButton.getAttribute("aria-expanded") === "true";
+    toggleButton.textContent = isExpanded ? "Hide Comments" : "Show Comments";
+  });
 
   // Create the comments section (initially collapsed)
   const commentsSection = document.createElement("div");
@@ -284,13 +287,90 @@ function createPost(postAuthor, postId, postText, comments) {
   document.getElementById("post-feed").appendChild(postCard);
 }
 
+function groupByPostId(data) {
+  return data.reduce((acc, item) => {
+    // Use post_id as the key
+    const postId = item.post_id;
+    if (!acc[postId]) {
+      acc[postId] = []; // Initialize an array for this post_id
+    }
+    acc[postId].push(item); // Add the current item to the array
+    return acc;
+  }, {});
+}
+
+function getRandomSample(array, size) {
+  // Shuffle the array
+  const shuffled = array.sort(() => 0.5 - Math.random());
+  // Return the first `size` elements
+  return shuffled.slice(0, size);
+}
+
 // Loop all data
 document.addEventListener("DOMContentLoaded", () => {
-
-  retrieveDataFromServer2();
-
-  createPost("KeshaEUW", 1, "WE WIN THOOOOOOOOOOSE!!!!", [
-    { author: "T1 Gumayusi", text: "Great post!" },
-    { author: "T1 Faker", text: "I totally agree with your post!" },
-  ]);
+  initialize();
 });
+
+async function initialize() {
+  try {
+    // Fetch the data
+    const commentsData = await retrieveCommentsData();
+
+    // Group all comments by their post IDs
+    const postGroups = groupByPostId(commentsData);
+
+    // Track already displayed post IDs
+    const shownPosts = new Set();
+
+    // Get all post IDs
+    const postIds = Object.keys(postGroups);
+
+    // Function to display posts
+    function displayPosts(count) {
+      // Filter post IDs to exclude already shown posts
+      const remainingPostIds = postIds.filter((id) => !shownPosts.has(id));
+
+      // If no posts left to show
+      if (remainingPostIds.length === 0) {
+        alert("No more posts to show!");
+        return;
+      }
+
+      // Get a random sample of 5 post IDs
+      const randomPostIds = getRandomSample(
+        remainingPostIds,
+        Math.min(count, remainingPostIds.length)
+      );
+
+      // Loop through the sampled post IDs and display them
+      randomPostIds.forEach((postId) => {
+        const posts = postGroups[postId];
+
+        // Extract shared information from the first post in the group
+        const { post_author, post_title } = posts[0];
+
+        // Map comments from this group
+        const comments = posts.map((post) => ({
+          author: post.comment_author,
+          text: post.comment_body_adjusted,
+        }));
+
+        createPost(post_author, postId, commentRegex(post_title), comments);
+
+        // Mark this post as shown
+        shownPosts.add(postId);
+        console.log(shownPosts);
+      });
+    }
+    // Initial display of 5 posts
+    displayPosts(5);
+
+    // Add "Show More Posts" button functionality
+    const showMoreButton = document.getElementById("show-more-posts");
+    showMoreButton.addEventListener("click", () => {
+      displayPosts(5); // Show 5 more posts
+    });
+  } catch (error) {
+    console.error("Error during initialization:", error);
+  }
+}
