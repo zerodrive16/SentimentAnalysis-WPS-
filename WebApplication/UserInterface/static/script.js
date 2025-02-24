@@ -77,11 +77,46 @@ async function createNewComment() {
   document.getElementById("createCommentLabel").value = "";
 }
 document.getElementById("createComment").addEventListener("click", function () {
+  const authorInput = document.getElementById("createCommentAuthor");
+  const postIdInput = document.getElementById("checkPostId");
+  const labelInput = document.getElementById("createCommentLabel");
+  const contentTextarea = document.getElementById("createCommentContent");
+  const errorMessageDiv = document.getElementById("error-message");
+
+  // Helper function to display error messages
+  function displayError(message) {
+    errorMessageDiv.textContent = message;
+  }
+
+  //Input Validation
+  if (
+    authorInput.value.trim() === "" ||
+    postIdInput.value.trim() === "" ||
+    labelInput.value.trim() === "" ||
+    contentTextarea.value.trim() === ""
+  ) {
+    displayError("All fields must be filled out!");
+    return;
+  }
+
+  if (authorInput.value.length < 1 || authorInput.value.length > 50) {
+    displayError("Author name must be between 1 and 50 characters long!");
+    return;
+  }
+
+  if (labelInput.value !== "0" && labelInput.value !== "1") {
+    displayError("Label must be either 0 or 1!");
+    return;
+  }
+
+  if (postIdInput.value !== "7") {
+    displayError("PostID invalid!");
+    return;
+  }
+
+  displayError("");
   createNewComment();
 
-  const postsContainer = document.getElementById("post-feed");
-  postsContainer.innerHTML = "";
-  initialize();
 });
 
 // Regex for Comment Body
@@ -307,11 +342,7 @@ function getRandomSample(array, size) {
 }
 
 // Loop all data
-document.addEventListener("DOMContentLoaded", () => {
-  initialize();
-});
-
-async function initialize() {
+document.addEventListener("DOMContentLoaded", async () => {
   try {
     // Fetch the data
     const commentsData = await retrieveCommentsData();
@@ -373,4 +404,5 @@ async function initialize() {
   } catch (error) {
     console.error("Error during initialization:", error);
   }
-}
+});
+
