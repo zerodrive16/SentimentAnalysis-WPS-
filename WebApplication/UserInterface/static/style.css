@@ -29,11 +29,6 @@ body {
   color: var(--text-color);
 }
 
-.show-more {
-  display: flex;
-  justify-content: center;
-}
-
 button {
   background-color: var(--btn-bg);
   color: var(--btn-text);
@@ -61,3 +56,4 @@ button {
   box-shadow: 0 0 10px var(--bd-color);
   animation: border-animation 3s linear infinite;
 }
+

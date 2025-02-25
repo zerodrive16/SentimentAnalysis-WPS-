@@ -1,3 +1,6 @@
+// Global variable to cache the post groups
+let cachedPostGroups = null;
+
 function toggleDarkmode() {
   const body = document.body;
   const isDarkMode = body.classList.toggle("dark-mode");
@@ -33,14 +36,13 @@ async function createNewComment() {
     dataset = await retrieveDataFromServer(postId);
     if (!dataset) {
       console.error("Dataset is not retrieved");
-      return;
+      return false;
     }
   } catch (error) {
     console.error("Error retrieving dataset: ", error);
-    return;
+    return false;
   }
 
-  // data preparation
   const data = {
     post_id: postId,
     post_author: dataset.post_author,
@@ -59,24 +61,26 @@ async function createNewComment() {
     comment_bert_labels: -1,
   };
 
-  // Check if any of the above attributes exists
   for (const key in data) {
     if (data.hasOwnProperty(key)) {
       const value = data[key];
       if (value === null || value === undefined || value === "") {
-        return null;
+        console.error(`Invalid value for ${key}: ${value}`);
+        return false;
       }
     }
   }
-  await sendToPythonScript(data);
 
-  // Clear everything
-  document.getElementById("createCommentAuthor").value = "";
-  document.getElementById("checkPostId").value = "";
-  document.getElementById("createCommentContent").value = "";
-  document.getElementById("createCommentLabel").value = "";
+  try {
+    await sendToPythonScript(data);
+    return true; // Indicate success
+  } catch (error) {
+    console.error("Error sending to Python script:", error);
+    return false;
+  }
 }
-document.getElementById("createComment").addEventListener("click", function () {
+
+document.getElementById("createComment").addEventListener("click", async function () {
   const authorInput = document.getElementById("createCommentAuthor");
   const postIdInput = document.getElementById("checkPostId");
   const labelInput = document.getElementById("createCommentLabel");
@@ -86,38 +90,112 @@ document.getElementById("createComment").addEventListener("click", function () {
   // Helper function to display error messages
   function displayError(message) {
     errorMessageDiv.textContent = message;
-  }
-
-  //Input Validation
-  if (
-    authorInput.value.trim() === "" ||
-    postIdInput.value.trim() === "" ||
-    labelInput.value.trim() === "" ||
-    contentTextarea.value.trim() === ""
-  ) {
-    displayError("All fields must be filled out!");
-    return;
-  }
-
-  if (authorInput.value.length < 1 || authorInput.value.length > 50) {
-    displayError("Author name must be between 1 and 50 characters long!");
-    return;
-  }
-
-  if (labelInput.value !== "0" && labelInput.value !== "1") {
-    displayError("Label must be either 0 or 1!");
-    return;
-  }
-
-  if (postIdInput.value !== "7") {
-    displayError("PostID invalid!");
-    return;
+    errorMessageDiv.style.display = message ? "block" : "none";
   }
 
   displayError("");
-  createNewComment();
 
+  // Check if cache is available
+  if (!cachedPostGroups) {
+    displayError("Data not loaded yet. Please try again in a moment.");
+    return;
+  }
+
+const validPostIds = Object.keys(cachedPostGroups);
+
+  const validations = [
+    {
+      condition: (
+        !authorInput.value.trim() ||
+        !postIdInput.value.trim() ||
+        !labelInput.value.trim() ||
+        !contentTextarea.value.trim()
+      ),
+      message: "All fields must be filled out!",
+    },
+    {
+      condition: authorInput.value.length > 50,
+      message: "Author name must be 50 characters or less!",
+    },
+    {
+      condition: !validPostIds.includes(String(postIdInput.value.trim())),
+      message: "Invalid Post ID! Please select a valid post.",
+    },
+    {
+      condition: !["0", "1"].includes(labelInput.value.trim()),
+      message: "Label must be either 0 or 1!",
+    },
+    {
+      condition: contentTextarea.value.length > 500,
+      message: "Comment content must be 500 characters or less!",
+    },
+  ];
+
+for (const { condition, message } of validations) {
+    if (condition) {
+      displayError(message);
+      return;
+    }
+  }
+
+  const success = await createNewComment();
+  if (success) {
+    const newComment = {
+      author: authorInput.value.trim(),
+      text: contentTextarea.value.trim(),
+    };
+    updatePostFeed(postIdInput.value.trim(), newComment);
+
+    authorInput.value = "";
+    postIdInput.value = "";
+    labelInput.value = "";
+    contentTextarea.value = "";
+    displayError("Comment added successfully!");
+
+    const modalElement = document.getElementById("exampleModal");
+    const modal = bootstrap.Modal.getInstance(modalElement);
+    modal.hide();
+  } else {
+    displayError("Failed to create comment. Please try again.");
+  }
 });
+
+// New function to update the post feed UI
+function updatePostFeed(postId, comment) {
+  const commentsSection = document.getElementById(`commentsSection${postId}`);
+
+  if (!commentsSection) {
+    console.error(`Post with ID ${postId} not found in the feed.`);
+    return;
+  }
+
+  const existingComments = commentsSection.querySelectorAll(".card.mb-2");
+  const commentIndex = existingComments.length + 1;
+
+  const commentCard = document.createElement("div");
+  commentCard.className = "card mb-2";
+
+  const commentHeader = document.createElement("div");
+  commentHeader.className =
+    "card-body p-2 d-flex justify-content-between align-items-center";
+  commentHeader.innerHTML = `
+    <strong>${comment.author}:</strong>
+    <span class="text">Comment #${commentIndex}</span>
+  `;
+
+  const commentBody = document.createElement("div");
+  commentBody.className = "card-body p-2";
+  commentBody.innerHTML = `<p class="mb-0">${comment.text}</p>`;
+
+  commentCard.appendChild(commentHeader);
+  commentCard.appendChild(commentBody);
+  commentsSection.appendChild(commentCard);
+
+  const toggleButton = commentsSection.previousElementSibling;
+  if (toggleButton && toggleButton.getAttribute("aria-expanded") === "false") {
+    toggleButton.click();
+  }
+}
 
 // Regex for Comment Body
 function commentRegex(comment_body) {
@@ -335,74 +413,89 @@ function groupByPostId(data) {
 }
 
 function getRandomSample(array, size) {
-  // Shuffle the array
-  const shuffled = array.sort(() => 0.5 - Math.random());
-  // Return the first `size` elements
+  const shuffled = array.slice().sort(() => Math.random() - 0.5);
   return shuffled.slice(0, size);
 }
 
 // Loop all data
 document.addEventListener("DOMContentLoaded", async () => {
   try {
-    // Fetch the data
+    // Fetch and cache the data once on page load
     const commentsData = await retrieveCommentsData();
 
     // Group all comments by their post IDs
-    const postGroups = groupByPostId(commentsData);
-
-    // Track already displayed post IDs
-    const shownPosts = new Set();
+    cachedPostGroups = groupByPostId(commentsData);
+    console.log("Cached Post Groups:", cachedPostGroups); // For debugging
 
     // Get all post IDs
-    const postIds = Object.keys(postGroups);
+    const allPostIds = Object.keys(cachedPostGroups);
+    const shownPosts = new Set();
 
-    // Function to display posts
-    function displayPosts(count) {
-      // Filter post IDs to exclude already shown posts
-      const remainingPostIds = postIds.filter((id) => !shownPosts.has(id));
+    // Function to create post elements from post data
+    function createPostElements(postIds) {
+      const posts = postIds.map(postId => {
+        const postGroup = cachedPostGroups[postId];
+        const { post_author, post_title } = postGroup[0];
 
-      // If no posts left to show
-      if (remainingPostIds.length === 0) {
-        alert("No more posts to show!");
-        return;
-      }
-
-      // Get a random sample of 5 post IDs
-      const randomPostIds = getRandomSample(
-        remainingPostIds,
-        Math.min(count, remainingPostIds.length)
-      );
-
-      // Loop through the sampled post IDs and display them
-      randomPostIds.forEach((postId) => {
-        const posts = postGroups[postId];
-
-        // Extract shared information from the first post in the group
-        const { post_author, post_title } = posts[0];
-
-        // Map comments from this group
-        const comments = posts.map((post) => ({
+        const comments = postGroup.map(post => ({
           author: post.comment_author,
           text: post.comment_body_adjusted,
         }));
 
-        createPost(post_author, postId, commentRegex(post_title), comments);
+        return { post_author, postId, post_title, comments };
+      });
 
-        // Mark this post as shown
-        shownPosts.add(postId);
-        console.log(shownPosts);
+      return posts;
+    }
+
+    // Function to display posts
+    function displayPosts(postIds) {
+      // Clear existing posts
+      const mainFeed = document.getElementById("post-feed");
+      mainFeed.innerHTML = '';
+
+      // Create and append new posts
+      const postsToShow = createPostElements(postIds);
+      postsToShow.forEach(post => {
+        createPost(
+          post.post_author,
+          post.postId,
+          commentRegex(post.post_title),
+          post.comments
+        );
+        shownPosts.add(post.postId);
       });
     }
-    // Initial display of 5 posts
-    displayPosts(5);
 
-    // Add "Show More Posts" button functionality
+    // Show first 5 posts
+    // const initialPostIds = allPostIds.slice(0, Math.min(5, allPostIds.length))
+    const initialPostIds = getRandomSample(allPostIds, Math.min(5, allPostIds.length));
+    displayPosts(initialPostIds);
+
+    // Add refresh button functionality
     const showMoreButton = document.getElementById("show-more-posts");
     showMoreButton.addEventListener("click", () => {
-      displayPosts(5); // Show 5 more posts
+      // Get remaining post IDs that haven't been shown
+      const remainingPostIds = allPostIds.filter(id => !shownPosts.has(id));
+
+      // If fewer than 5 posts remain, reset the shownPosts set
+      if (remainingPostIds.length < 5) {
+        shownPosts.clear();
+        remainingPostIds.push(...allPostIds);
+      }
+
+      // Get 5 random new posts
+      const newRandomPostIds = getRandomSample(
+        remainingPostIds,
+        Math.min(5, remainingPostIds.length)
+      );
+
+      displayPosts(newRandomPostIds);
     });
+
   } catch (error) {
     console.error("Error during initialization:", error);
+    cachedPostGroups = {};
   }
 });
 

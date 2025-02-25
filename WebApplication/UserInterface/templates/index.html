@@ -83,7 +83,7 @@
             <div class="modal-dialog">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h1 class="modal-title fs-5" id="exampleModalLabel">
+                  <h1 class="modal-title fs-5 text-white" id="exampleModalLabel">
                     Create Comment
                   </h1>
                   <button
@@ -184,7 +184,7 @@
     <main class="container-fluid my-5">
       <div class="row">
         <!-- Left Side -->
-        <div class="col-md-2 sticky-left">
+        <div class="col-md-2 sticky-left vh-100">
           <div class="container mb-3">
             <span class="border border-primary">
               <!-- Banner Ad -->
@@ -201,17 +201,22 @@
 
         <!-- Middle Column: Social Media Post Feed -->
         <div class="container col-md-6">
-          <!-- Post Feed -->
-          <div class="post-feed" id="post-feed">
-            <!-- Example Post 1 -->
-          </div>
-          <div class="show-more">
-            <button id="show-more-posts">Show More Posts</button>
+          <div class="post-feed-container overflow-auto" style="height: 110vh;">
+            <div class="top-row d-flex justify-content-between align-items-center">
+              <div class="title fw-bold fs-2">
+                #Post Feed
+              </div>
+              <div class="show-more mb-1">
+                <button id="show-more-posts">Show 5 Different Posts</button>
+              </div>
+            </div>
+            <!-- Post Feed -->
+            <div class="post-feed" id="post-feed"></div>
           </div>
         </div>
 
         <!-- Right Side -->
-        <div class="col-md-3 mb-3">
+        <div class="col-md-3 mb-3 vh-100">
           <!-- Space for additional info -->
           <div class="card animated-border mb-5">
             <div class="card-body">
