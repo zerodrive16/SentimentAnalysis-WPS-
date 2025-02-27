@@ -16,6 +16,14 @@ function toggleDarkmode() {
     icon.classList.remove("bi-brightness-high");
     icon.classList.add("bi-moon");
   }
+
+  // Add image toggle
+  var img = document.querySelector(".card-img-top"); // Select the image by class
+  if (isDarkMode) {
+    img.src = "https://c.wallhere.com/photos/5a/b8/Fate_Series_FGO_Fate_Stay_Night_fate_stay_night_heaven's_feel_anime_girls_2D_fan_art_vertical-1671655.jpg!s1"; // Replace with your dark mode image URL
+  } else {
+    img.src = "https://c.wallhere.com/photos/ed/c3/1920x2661_px_Fate_Grand_Order_Fate_Series_Saber-717886.jpg!d"; // Original image
+  }
 }
 document
   .getElementById("theme-toggle")

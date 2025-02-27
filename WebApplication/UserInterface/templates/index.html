@@ -186,29 +186,30 @@
         <!-- Left Side -->
         <div class="col-md-2 sticky-left vh-100">
           <div class="container mb-3">
-            <span class="border border-primary">
               <!-- Banner Ad -->
-              <a href="" target="_blank">
-                <img
-                  src="https://i0.wp.com/beneaththetangles.com/wp-content/uploads/2022/04/saber-arturia-pendragon-standing-firm.png?resize=600%2C2500&ssl=1"
-                  class="card-img-top img-fluid animated-border"
-                  alt="Advertisement"
-                />
-              </a>
+            <div class="container-fluid p-0">
+              <img src="https://c.wallhere.com/photos/ed/c3/1920x2661_px_Fate_Grand_Order_Fate_Series_Saber-717886.jpg!d"
+                   class="card-img-top img-fluid animated-border"
+              />
               <style>
+                .card-img-top {
+                  width: 100vw; /* 100% of viewport width */
+                  height: 100vh; /* 100% of viewport height */
+                  object-fit: cover; /* Crops image to fit while maintaining aspect ratio */
+                  }
+
                 @media (max-width: 768px) {
                   .sticky-left {
                   display: none;
                   }
                 }
               </style>
-            </span>
+            </div>
           </div>
         </div>
 
         <!-- Middle Column: Social Media Post Feed -->
         <div class="container col-md-6">
-          <div class="post-feed-container overflow-auto" style="height: 110vh;">
             <div class="top-row d-flex justify-content-between align-items-center">
               <div class="title fw-bold fs-2">
                 #Post Feed
@@ -217,6 +218,7 @@
                 <button id="show-more-posts">Show 5 Different Posts</button>
               </div>
             </div>
+          <div class="post-feed-container overflow-auto" style="height: 110vh;">
             <!-- Post Feed -->
             <div class="post-feed" id="post-feed"></div>
           </div>
@@ -430,6 +432,6 @@
 
   <!-- Footer -->
   <footer class="bg-secondary text-white text-center py-3">
-    <p>&copy; 2024 Website. All rights reserved.</p>
+    <p>&copy; 2024-2025 Website. All rights reserved. Created by ZeroDrive and SaberBot49.</p>
   </footer>
 </html>
