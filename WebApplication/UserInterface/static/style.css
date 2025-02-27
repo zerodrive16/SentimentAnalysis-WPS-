@@ -6,6 +6,8 @@
   --btn-bg: #333a64;
   --btn-text: #fff;
   --bd-color: #9ecaed;
+  --positive: #333A64;
+  --negative: #F4DEAE;
 }
 
 /* Dark Mode Colors */
@@ -16,6 +18,18 @@ body.dark-mode {
   --btn-bg: #541413;
   --btn-text: #fff;
   --bd-color: #af342b;
+  --positive: #AB180B;
+  --negative: #636E9A;
+}
+
+/* Comment Label Colors - 0=negative 1=positive*/
+.label-0 {
+  color: var(--negative);
+  background-color: var(--positive);
+}
+.label-1 {
+  color: var(--positive);
+  background-color: var(--negative);
 }
 
 /* General Styles Using Variables */
@@ -57,3 +71,8 @@ button {
   animation: border-animation 3s linear infinite;
 }
 
+@media (max-width: 600px) {
+  img {
+    display: none;
+  }
+}

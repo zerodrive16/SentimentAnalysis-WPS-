@@ -195,6 +195,13 @@
                   alt="Advertisement"
                 />
               </a>
+              <style>
+                @media (max-width: 768px) {
+                  .sticky-left {
+                  display: none;
+                  }
+                }
+              </style>
             </span>
           </div>
         </div>
@@ -214,6 +221,12 @@
             <div class="post-feed" id="post-feed"></div>
           </div>
         </div>
+
+        <style>
+          .post-feed-container::-webkit-scrollbar {
+          display: none;
+          }
+        </style>
 
         <!-- Right Side -->
         <div class="col-md-3 mb-3 vh-100">

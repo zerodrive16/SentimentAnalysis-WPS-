@@ -1,12 +1,12 @@
-// Global variable to cache the post groups
+// Caching data globally
 let cachedPostGroups = null;
 
+// Darkmode function
 function toggleDarkmode() {
   const body = document.body;
   const isDarkMode = body.classList.toggle("dark-mode");
   console.log("Theme toggled:", isDarkMode ? "Dark Mode" : "Light Mode");
 
-  // Update button icon
   var icon = document.getElementById("s1");
 
   if (isDarkMode) {
@@ -101,6 +101,7 @@ document.getElementById("createComment").addEventListener("click", async functio
     return;
   }
 
+// Validations for input fields
 const validPostIds = Object.keys(cachedPostGroups);
 
   const validations = [
@@ -373,9 +374,12 @@ function createPost(postAuthor, postId, postText, comments) {
 
     const commentHeader = document.createElement("div");
     commentHeader.className =
-      "card-body p-2 d-flex justify-content-between align-items-center";
+      "card-body p-2 d-flex justify-content-between align-items-center"+
+      (comment.personal_label === 0 ? " label-0" : " label-1");;
+
     commentHeader.innerHTML = `
       <strong>${comment.author}:</strong>
+      <span class="label">${comment.personal_label}</span>
       <span class="text">Comment #${index + 1}</span>
     `;
 
@@ -417,7 +421,7 @@ function getRandomSample(array, size) {
   return shuffled.slice(0, size);
 }
 
-// Loop all data
+// Load and display data on startup
 document.addEventListener("DOMContentLoaded", async () => {
   try {
     // Fetch and cache the data once on page load
@@ -439,6 +443,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         const comments = postGroup.map(post => ({
           author: post.comment_author,
+          personal_label: post.comment_personal_labels,
           text: post.comment_body_adjusted,
         }));
 
@@ -467,8 +472,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
     }
 
-    // Show first 5 posts
-    // const initialPostIds = allPostIds.slice(0, Math.min(5, allPostIds.length))
+    // Show random 5 posts
     const initialPostIds = getRandomSample(allPostIds, Math.min(5, allPostIds.length));
     displayPosts(initialPostIds);
 
