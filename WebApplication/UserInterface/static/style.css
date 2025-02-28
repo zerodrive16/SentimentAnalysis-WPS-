@@ -18,8 +18,8 @@ body.dark-mode {
   --btn-bg: #541413;
   --btn-text: #fff;
   --bd-color: #af342b;
-  --positive: #AB180B;
-  --negative: #636E9A;
+  --positive: #636E9A;
+  --negative: #AB180B;
 }
 
 /* Comment Label Colors - 0=negative 1=positive*/
