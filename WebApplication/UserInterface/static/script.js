@@ -80,11 +80,11 @@ async function createNewComment() {
   }
 
   try {
-    await sendToPythonScript(data);
-    return true; // Indicate success
+    const result = await sendToPythonScript(data);
+    return result; // Indicate success
   } catch (error) {
     console.error("Error sending to Python script:", error);
-    return false;
+    return null;
   }
 }
 
@@ -147,11 +147,13 @@ for (const { condition, message } of validations) {
     }
   }
 
-  const success = await createNewComment();
-  if (success) {
+  const result = await createNewComment();
+  if (result) {
     const newComment = {
       author: authorInput.value.trim(),
       text: contentTextarea.value.trim(),
+      bert_label: result.comment_bert_labels,
+      personal_label: result.comment_personal_labels,
     };
     updatePostFeed(postIdInput.value.trim(), newComment);
 
@@ -188,6 +190,7 @@ function updatePostFeed(postId, comment) {
   commentHeader.className =
     "card-body p-2 d-flex justify-content-between align-items-center"+
       (comment.bert_label === 0 ? " label-0" : " label-1");
+  console.log(comment)
   commentHeader.innerHTML = `
     <strong>${comment.author}:</strong>
     <span class="text">Comment #${commentIndex}</span>
@@ -254,9 +257,11 @@ async function sendToPythonScript(data) {
     });
     if (response.ok) {
       const result = await response.json();
+      return result;
       console.log("The API call worked with these result: ", result);
     } else {
       const errorResult = await response.text();
+      return null;
       console.error("Error in sending the data to the Script:", errorResult);
     }
   } catch (error) {
