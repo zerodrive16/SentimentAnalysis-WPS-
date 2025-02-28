@@ -186,7 +186,8 @@ function updatePostFeed(postId, comment) {
 
   const commentHeader = document.createElement("div");
   commentHeader.className =
-    "card-body p-2 d-flex justify-content-between align-items-center";
+    "card-body p-2 d-flex justify-content-between align-items-center"+
+      (comment.personal_label === 0 ? " label-0" : " label-1");
   commentHeader.innerHTML = `
     <strong>${comment.author}:</strong>
     <span class="text">Comment #${commentIndex}</span>
@@ -383,11 +384,10 @@ function createPost(postAuthor, postId, postText, comments) {
     const commentHeader = document.createElement("div");
     commentHeader.className =
       "card-body p-2 d-flex justify-content-between align-items-center"+
-      (comment.personal_label === 0 ? " label-0" : " label-1");;
+      (comment.personal_label === 0 ? " label-0" : " label-1");
 
     commentHeader.innerHTML = `
       <strong>${comment.author}:</strong>
-      <span class="label">${comment.personal_label}</span>
       <span class="text">Comment #${index + 1}</span>
     `;
 
