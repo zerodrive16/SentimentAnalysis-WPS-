@@ -159,7 +159,7 @@ for (const { condition, message } of validations) {
     postIdInput.value = "";
     labelInput.value = "";
     contentTextarea.value = "";
-    displayError("Comment added successfully!");
+    displayError("");
 
     const modalElement = document.getElementById("exampleModal");
     const modal = bootstrap.Modal.getInstance(modalElement);
