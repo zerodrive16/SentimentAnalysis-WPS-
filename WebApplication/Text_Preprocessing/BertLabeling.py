@@ -61,6 +61,7 @@ def main():
     print("Update database...")
     updateDataset(commentsAdjusted, sentimentPrediction)
 
+
 if __name__ == "__main__":
     main()
 

@@ -38,6 +38,7 @@ class FilterRegex:
 
         return cleaned_comment
 
+
 if __name__ == '__main__':
     all_records = Data.objects.all()
     filterRegex = FilterRegex(all_records)
