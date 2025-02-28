@@ -187,7 +187,7 @@ function updatePostFeed(postId, comment) {
   const commentHeader = document.createElement("div");
   commentHeader.className =
     "card-body p-2 d-flex justify-content-between align-items-center"+
-      (comment.personal_label === 0 ? " label-0" : " label-1");
+      (comment.bert_label === 0 ? " label-0" : " label-1");
   commentHeader.innerHTML = `
     <strong>${comment.author}:</strong>
     <span class="text">Comment #${commentIndex}</span>
@@ -384,7 +384,7 @@ function createPost(postAuthor, postId, postText, comments) {
     const commentHeader = document.createElement("div");
     commentHeader.className =
       "card-body p-2 d-flex justify-content-between align-items-center"+
-      (comment.personal_label === 0 ? " label-0" : " label-1");
+      (comment.bert_label === 0 ? " label-0" : " label-1");
 
     commentHeader.innerHTML = `
       <strong>${comment.author}:</strong>
@@ -451,10 +451,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         const comments = postGroup.map(post => ({
           author: post.comment_author,
+          bert_label: post.comment_bert_labels,
           personal_label: post.comment_personal_labels,
           text: post.comment_body_adjusted,
         }));
-
+        console.log(comments)
         return { post_author, postId, post_title, comments };
       });
 
